@@ -1,0 +1,64 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.tagsBlock {
+    font-size:12px;
+}
+
+    .tagsBlock > div {
+        padding: 12px;
+        display: inline-block;
+        width: 23%;
+        border: 1px solid #d1d1d1;
+        border-radius: 5px;
+        margin: 5px 5px;
+    }
+
+        .tagsBlock > div > div {
+            display: flex;
+            color: gray;
+        }
+
+            .tagsBlock > div > div > a {
+                text-decoration: none;
+                padding: 5px 6px;
+                margin: 2px 2px 2px 0;
+                background-color: #edf5fd;
+                border-radius: 3px;
+            }
+
+                .tagsBlock > div > div > a:hover {
+                    background-color: #dfedfb;
+                }
+
+            .tagsBlock > div > div > p {
+                font-size: 13px;
+                -webkit-line-clamp: 4;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+                .tagsBlock > div > div > p:hover {
+                    color: black;
+                }

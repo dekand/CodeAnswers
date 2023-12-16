@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CodeAnswers.Models.Tags>
+
+@{
+    ViewData["Title"] = "Теги - CodeAnswers";
+}
+
+<h1>Теги</h1>
+<p>Тег – это ключевое слово или метка, которая классифицирует ваш вопрос среди других похожих вопросов. Использование правильных тегов поможет другим найти ваш вопрос и ответить на него.</p>
+<form asp-controller="Tags" asp-action="Index" method="get">
+    <p>
+        <input type="text" name="SearchString" placeholder="Найти тег по названию.."/>
+        <input type="submit" value="Найти" />
+    </p>
+</form>
+<div class="tagsBlock">
+    @foreach (var item in Model)
+    {
+        <div>
+            <div><a href="#">@Html.DisplayFor(modelItem => item.Name)</a></div>
+            <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
+            <div class="row">
+                <div class="col">
+                    *количество вопросов
+                </div>
+                <div class="col">
+                    *количество за неделю
+                </div>
+            </div>
+        </div>
+    }
+</div>
