@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 
 namespace CodeAnswers.Models
 {
@@ -21,5 +22,10 @@ namespace CodeAnswers.Models
         public DateTime ModifiedDate { get; set; }
 
         public int Rating { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public List<Tags> Tag { get; set; } = new List<Tags>();
+        public List<QuestionTags> QuestionTag { get; set; } = new List<QuestionTags>();
     }
 }

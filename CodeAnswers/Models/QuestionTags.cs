@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CodeAnswers.Models
 {
     public class QuestionTags
     {
-        public int Id { get; set; }
-        [Required]
-        public int IdTag { get; set; }
+        //public int Id { get; set; }
+        [Key]
+        public int TagId { get; set; }
 
-        [Required]
-        public int IdQuestion { get; set; }
+        public int QuestionId { get; set; }
+
+        public Tags Tags { get; set; }
+        public Questions Questions { get; set; }
     }
 }

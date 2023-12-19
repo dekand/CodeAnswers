@@ -10,8 +10,23 @@ namespace CodeAnswers.Data
             : base(options)
         {
         }
-        public DbSet<CodeAnswers.Models.Tags> Tags { get; set; } = default!;
-        public DbSet<CodeAnswers.Models.Questions> Questions { get; set; } = default!;
-        public DbSet<CodeAnswers.Models.Users> Users { get; set; } = default!;
+        public DbSet<Tags> Tags { get; set; } = default!;
+        public DbSet<Questions> Questions { get; set; } = default!;
+        public DbSet<QuestionTags> QuestionTags { get; set; } = default!;
+        public DbSet<Users> Users { get; set; } = default!;
+        public DbSet<Answers> Answers { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Tags>().ToTable("Tags");
+            modelBuilder.Entity<Questions>().ToTable("Questions");
+            modelBuilder.Entity<QuestionTags>().ToTable("QuestionTags");
+            modelBuilder.Entity<Users>().ToTable("Users");
+            modelBuilder.Entity<Answers>().ToTable("Answers");
+
+            //modelBuilder.Entity<QuestionTags>()
+            //    .HasKey(c => new { c.TagId, c.QuestionId });
+        }
     }
 }

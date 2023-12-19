@@ -3,10 +3,7 @@
     ViewData["Title"] = "Code Answers - Где разработчики обучаются, делятся знаниями и развиваются";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <h1>Топ вопросов</h1>
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
-            <th></th>
+            <th>
+                <p>Теги</p>
+            </th>
         </tr>
     </thead>
     <tbody>

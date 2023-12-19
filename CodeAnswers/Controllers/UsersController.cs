@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CodeAnswers.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
