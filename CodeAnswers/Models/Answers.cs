@@ -5,11 +5,8 @@ namespace CodeAnswers.Models
     public class Answers
     {
         public int Id { get; set; }
-        [Required]
-        public int IdQuestion { get; set; }
-        public int IdAuthor { get; set; }
-
-        [RegularExpression(@"^[a-zA-Z0-9]+$"), Required]
+        public int QuestionId { get; set; }
+        public int AuthorId { get; set; }
         public string Description { get; set; }
 
         [Display(Name = "Publication Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]

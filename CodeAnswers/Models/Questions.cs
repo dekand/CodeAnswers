@@ -6,22 +6,19 @@ namespace CodeAnswers.Models
     public class Questions
     {
         public int Id { get; set; }
-        [Required]
-        public int IdAuthor { get; set; }
+        public int AuthorId { get; set; }
 
-        [StringLength(255, MinimumLength = 5), Required]
+        [MaxLength(255), MinLength(5)]
         public string Title { get; set; }
-
-        [Required]
         public string Description { get; set; }
 
         [Display(Name = "Publication Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime PublicationDate { get; set; }
 
         [Display(Name = "Modified Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
         [System.Text.Json.Serialization.JsonIgnore]

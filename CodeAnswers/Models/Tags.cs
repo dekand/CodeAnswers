@@ -6,10 +6,8 @@ namespace CodeAnswers.Models
     {
         public int Id { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z0-9\W]+?$"), StringLength(30, MinimumLength = 1), Required]
+        [RegularExpression(@"^[a-zA-Z0-9\W]+?$"), StringLength(30, MinimumLength = 1)]
         public string Name { get; set; }
-
-        
         public string Description { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]

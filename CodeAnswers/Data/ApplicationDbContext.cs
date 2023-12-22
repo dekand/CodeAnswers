@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using CodeAnswers.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace CodeAnswers.Data
 {
@@ -19,14 +21,12 @@ namespace CodeAnswers.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Tags>().ToTable("Tags");
-            modelBuilder.Entity<Questions>().ToTable("Questions");
-            modelBuilder.Entity<QuestionTags>().ToTable("QuestionTags");
-            modelBuilder.Entity<Users>().ToTable("Users");
-            modelBuilder.Entity<Answers>().ToTable("Answers");
-
-            //modelBuilder.Entity<QuestionTags>()
-            //    .HasKey(c => new { c.TagId, c.QuestionId });
+            modelBuilder.ApplyConfiguration(new AnswersConfiguration());
+            modelBuilder.ApplyConfiguration(new QuestionsConfiguration());
+            modelBuilder.ApplyConfiguration(new TagsConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            //ПОСЛЕ ТОГО КАК РАЗБЕРУСЬ СО СВЯЗЯМИ МНОГИЕ КО МНОГИМ, ОДИН КО МНОГИМ, ОДИН К ОДНОМУ И ТД..
+            //modelBuilder.ApplyConfiguration(new QuestionTagsConfiguration());
         }
     }
 }
