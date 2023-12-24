@@ -7,5 +7,6 @@
 4) MS SQL Server (local)
 5) Entity Framework (ver 8)
 ## Схема базы данных
-![CodeCraftersDB drawio](https://github.com/dekand/CodeAnswers/assets/150679574/16af4cc7-3fa0-4214-b847-64f3f52148a2)
+![CodeAnswersDB](https://github.com/dekand/CodeAnswers/assets/150679574/a6805e6c-6b6a-400f-b04f-723336f84854)
 Плюс таблицы БД для авторизации в процессе..
+
