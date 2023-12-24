@@ -62,3 +62,55 @@ body {
                 .tagsBlock > div > div > p:hover {
                     color: black;
                 }
+.top-questions{
+    border: 1px solid black;
+    padding:12px;
+    font-size:13px;
+}
+.top-questions p{margin:0;}
+
+    .top-questions > div {
+        border: 1px solid green;
+        padding: 5px;
+        display: block;
+    }
+        .top-questions > div > div:nth-child(3){
+            width:100%;
+            text-align:end;
+            color:gray;
+        }
+            .top-questions > div > div:nth-child(3) > a {
+                text-decoration: none;
+            }
+
+            .top-questions > div > div {
+                display: inline-block;
+                border: 1px solid blue;
+                vertical-align: top;
+                min-width: 70px;
+            }
+
+.qstns-list > div:nth-child(1) {
+    font-size: 17px;
+}
+    .qstns-list > div:nth-child(1) > a {
+        text-decoration: none;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+.qstns-list > div:nth-child(2){
+    margin:5px 0;
+}
+.qstns-list > div:nth-child(2) > a {
+    text-decoration: none;
+    padding: 3px 4px;
+    margin: 0 5px;
+    background-color: #edf5fd;
+    border-radius: 3px;
+}
+
+    .qstns-list > div:nth-child(2) > a:hover {
+        background-color: #dfedfb;
+    }
