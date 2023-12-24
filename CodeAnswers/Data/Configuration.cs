@@ -17,6 +17,17 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Description).HasColumnName("description").IsRequired();
             builder.Property(p => p.Rating).HasColumnName("rating").IsRequired()
                 .HasDefaultValue(0);
+            //один-ко-многим (Users-Answers)
+            builder
+               .HasOne(c => c.User)
+               .WithMany(s => s.Answer)
+               .HasForeignKey(u => u.AuthorId)
+               .OnDelete(DeleteBehavior.Restrict);
+            //один-ко-многим (Questions-Answers)
+            builder
+                .HasOne(c => c.Question)
+                .WithMany(s => s.Answer)
+                .HasForeignKey(u => u.QuestionId);
         }
     }
 
@@ -33,6 +44,21 @@ namespace CodeAnswers.Data
             builder.Property(p => p.ModifiedDate).HasColumnName("modified_date");
             builder.Property(p => p.Rating).HasColumnName("rating")
                 .HasDefaultValue(0);
+            //многие-ко-многим (Questions-Tags)
+            builder
+               .HasMany(c => c.Tag)
+               .WithMany(s => s.Question)
+               .UsingEntity(j => j.ToTable("QuestionsTags"));
+            //один-ко-многим (Users-Questions)
+            builder
+               .HasOne(c => c.User)
+               .WithMany(s => s.Question)
+               .HasForeignKey(u=>u.AuthorId);
+            //один-ко-многим (Questions-Answers)
+            builder
+                .HasMany(c => c.Answer)
+                .WithOne(s => s.Question)
+                .HasForeignKey(u => u.QuestionId);
         }
     }
 
@@ -44,11 +70,11 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Name).HasColumnName("name").IsRequired();
             builder.Property(p => p.Description).HasColumnName("description")
             .HasDefaultValue("none");
-
-            //builder
-            //   .HasMany(c => c.Question)
-            //   .WithMany(s => s.Tag)
-            //   .UsingEntity(j => j.ToTable("QuestionsTags"));
+            //многие-ко-многим (Questions-Tags)
+            builder
+               .HasMany(c => c.Question)
+               .WithMany(s => s.Tag)
+               .UsingEntity(j => j.ToTable("QuestionsTags"));
         }
     }
 
@@ -68,14 +94,19 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Location).HasColumnName("location");
             builder.Property(p => p.LinkSocial).HasColumnName("link_social");
             builder.Property(p => p.LinkGithub).HasColumnName("link_github");
+            //один-ко-многим (Users-Questions)
+            builder
+               .HasMany(c => c.Question)
+               .WithOne(s => s.User)
+               .HasForeignKey(u => u.AuthorId);
+            //один-ко-многим (Users-Answers)
+            builder
+               .HasMany(c => c.Answer)
+               .WithOne(s => s.User)
+               .HasForeignKey(u => u.AuthorId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 
-    //public class QuestionTagsConfiguration : IEntityTypeConfiguration<QuestionTags>
-    //{
-    //    public void Configure(EntityTypeBuilder<QuestionTags> builder)
-    //    {
 
-    //    }
-    //}
 }

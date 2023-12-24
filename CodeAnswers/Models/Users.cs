@@ -26,5 +26,10 @@ namespace CodeAnswers.Models
 
         [DataType(DataType.Url), StringLength(255, MinimumLength = 3)]
         public string? LinkGithub { get; set; }
+
+        //один-ко-многим (Users-Questions)
+        public List<Questions> Question { get; set; } = new();
+        //один-ко-многим (Users-Answers)
+        public List<Answers> Answer { get; set; } = new();
     }
 }

@@ -10,6 +10,7 @@ namespace CodeAnswers.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        //многие-ко-многим (Questions-Tags)
         public List<Questions> Question { get; set; } = new();
     }
 }

@@ -4,6 +4,7 @@ using CodeAnswers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeAnswers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231224105614_OneToManyUsersQuestions")]
+    partial class OneToManyUsersQuestions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +34,7 @@ namespace CodeAnswers.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AuthorId")
-                        .IsRequired()
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int")
                         .HasColumnName("author_id");
 
@@ -58,10 +60,6 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("rating");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -414,25 +412,6 @@ namespace CodeAnswers.Data.Migrations
                     b.ToTable("QuestionsTags", (string)null);
                 });
 
-            modelBuilder.Entity("CodeAnswers.Models.Answers", b =>
-                {
-                    b.HasOne("CodeAnswers.Models.Users", "User")
-                        .WithMany("Answer")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CodeAnswers.Models.Questions", "Question")
-                        .WithMany("Answer")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CodeAnswers.Models.Questions", b =>
                 {
                     b.HasOne("CodeAnswers.Models.Users", "User")
@@ -510,15 +489,8 @@ namespace CodeAnswers.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CodeAnswers.Models.Questions", b =>
-                {
-                    b.Navigation("Answer");
-                });
-
             modelBuilder.Entity("CodeAnswers.Models.Users", b =>
                 {
-                    b.Navigation("Answer");
-
                     b.Navigation("Question");
                 });
 #pragma warning restore 612, 618

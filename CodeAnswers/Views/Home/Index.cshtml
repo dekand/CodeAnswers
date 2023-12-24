@@ -8,7 +8,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AuthorId)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -35,7 +35,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AuthorId)
+                    @Html.DisplayFor(modelItem => item.User.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
@@ -61,7 +61,6 @@
                             </a>
                         </div>
                     }
-
                 </td>
             </tr>
         }

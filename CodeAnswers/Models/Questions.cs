@@ -6,7 +6,6 @@ namespace CodeAnswers.Models
     public class Questions
     {
         public int Id { get; set; }
-        public int AuthorId { get; set; }
 
         [MaxLength(255), MinLength(5)]
         public string Title { get; set; }
@@ -20,6 +19,12 @@ namespace CodeAnswers.Models
 
         public int? Rating { get; set; }
 
+        //многие-ко-многим (Questions-Tags)
         public List<Tags> Tag { get; set; } = new();
+        //один-ко-многим (Users-Questions)
+        public int? AuthorId { get; set; }
+        public Users? User { get; set; }
+        //один-ко-многим (Questions-Answers)
+        public List<Answers> Answer { get; set; } = new();
     }
 }
