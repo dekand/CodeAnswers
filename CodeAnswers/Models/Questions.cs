@@ -20,9 +20,6 @@ namespace CodeAnswers.Models
 
         public int? Rating { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public List<Tags> Tag { get; set; } = new List<Tags>();
-        public List<QuestionTags> QuestionTag { get; set; } = new List<QuestionTags>();
+        public List<Tags> Tag { get; set; } = new();
     }
 }

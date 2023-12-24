@@ -14,9 +14,10 @@ namespace CodeAnswers.Data
         }
         public DbSet<Tags> Tags { get; set; } = default!;
         public DbSet<Questions> Questions { get; set; } = default!;
-        public DbSet<QuestionTags> QuestionTags { get; set; } = default!;
         public DbSet<Users> Users { get; set; } = default!;
         public DbSet<Answers> Answers { get; set; } = default!;
+        
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,8 +26,6 @@ namespace CodeAnswers.Data
             modelBuilder.ApplyConfiguration(new QuestionsConfiguration());
             modelBuilder.ApplyConfiguration(new TagsConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
-            //ПОСЛЕ ТОГО КАК РАЗБЕРУСЬ СО СВЯЗЯМИ МНОГИЕ КО МНОГИМ, ОДИН КО МНОГИМ, ОДИН К ОДНОМУ И ТД..
-            //modelBuilder.ApplyConfiguration(new QuestionTagsConfiguration());
         }
     }
 }

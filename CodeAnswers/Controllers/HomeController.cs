@@ -24,7 +24,7 @@ namespace CodeAnswers.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions
+            return View(await _context.Questions.Include(s => s.Tag)
                 .ToListAsync());
         }
 

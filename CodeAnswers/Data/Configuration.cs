@@ -1,6 +1,7 @@
 ﻿using CodeAnswers.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace CodeAnswers.Data
 {
@@ -42,7 +43,12 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Id).HasColumnName("id");
             builder.Property(p => p.Name).HasColumnName("name").IsRequired();
             builder.Property(p => p.Description).HasColumnName("description")
-                .HasDefaultValue("none");
+            .HasDefaultValue("none");
+
+            //builder
+            //   .HasMany(c => c.Question)
+            //   .WithMany(s => s.Tag)
+            //   .UsingEntity(j => j.ToTable("QuestionsTags"));
         }
     }
 
@@ -64,7 +70,7 @@ namespace CodeAnswers.Data
             builder.Property(p => p.LinkGithub).HasColumnName("link_github");
         }
     }
-    //ПОСЛЕ ТОГО КАК РАЗБЕРУСЬ СО СВЯЗЯМИ МНОГИЕ КО МНОГИМ, ОДИН КО МНОГИМ, ОДИН К ОДНОМУ И ТД..
+
     //public class QuestionTagsConfiguration : IEntityTypeConfiguration<QuestionTags>
     //{
     //    public void Configure(EntityTypeBuilder<QuestionTags> builder)

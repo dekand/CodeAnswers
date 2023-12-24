@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeAnswers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231222055139_answconfig")]
-    partial class answconfig
+    [Migration("20231223063236_mwm")]
+    partial class mwm
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,7 +54,9 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("question_id");
 
                     b.Property<int>("Rating")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasDefaultValue(0)
                         .HasColumnName("rating");
 
                     b.HasKey("Id");
@@ -62,60 +64,45 @@ namespace CodeAnswers.Data.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("CodeAnswers.Models.QuestionTags", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TagId");
-
-                    b.HasIndex("QuestionsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("QuestionTags");
-                });
-
             modelBuilder.Entity("CodeAnswers.Models.Questions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int")
+                        .HasColumnName("author_id");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
 
-                    b.Property<int>("IdAuthor")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
                     b.Property<DateTime>("PublicationDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("publication_date")
+                        .HasDefaultValueSql("getdate()");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                    b.Property<int?>("Rating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("rating");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("title");
 
                     b.HasKey("Id");
 
@@ -126,18 +113,23 @@ namespace CodeAnswers.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("none")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
@@ -148,39 +140,54 @@ namespace CodeAnswers.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("email");
 
                     b.Property<string>("LinkGithub")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("link_github");
 
                     b.Property<string>("LinkSocial")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("link_social");
 
                     b.Property<string>("Location")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("location");
 
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Reputation")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("registration_date")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<int>("Reputation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("reputation");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -387,38 +394,19 @@ namespace CodeAnswers.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            //modelBuilder.Entity("QuestionsTags", b =>
-            //    {
-            //        b.Property<int>("QuestionId")
-            //            .HasColumnType("int");
-
-            //        b.Property<int>("TagId")
-            //            .HasColumnType("int");
-
-            //        b.HasKey("QuestionId", "TagId");
-
-            //        b.HasIndex("TagId");
-
-            //        b.ToTable("QuestionsTags");
-            //    });
-
-            modelBuilder.Entity("CodeAnswers.Models.QuestionTags", b =>
+            modelBuilder.Entity("QuestionsTags", b =>
                 {
-                    b.HasOne("CodeAnswers.Models.Questions", "Questions")
-                        .WithMany("QuestionTag")
-                        .HasForeignKey("QuestionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
 
-                    b.HasOne("CodeAnswers.Models.Tags", "Tags")
-                        .WithMany("QuestionTag")
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Questions");
+                    b.HasKey("QuestionId", "TagId");
 
-                    b.Navigation("Tags");
+                    b.HasIndex("TagId");
+
+                    b.ToTable("QuestionsTags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -472,29 +460,19 @@ namespace CodeAnswers.Data.Migrations
                         .IsRequired();
                 });
 
-            //modelBuilder.Entity("QuestionsTags", b =>
-            //    {
-            //        b.HasOne("CodeAnswers.Models.Questions", null)
-            //            .WithMany()
-            //            .HasForeignKey("QuestionId")
-            //            .OnDelete(DeleteBehavior.Cascade)
-            //            .IsRequired();
-
-            //        b.HasOne("CodeAnswers.Models.Tags", null)
-            //            .WithMany()
-            //            .HasForeignKey("TagId")
-            //            .OnDelete(DeleteBehavior.Cascade)
-            //            .IsRequired();
-            //    });
-
-            modelBuilder.Entity("CodeAnswers.Models.Questions", b =>
+            modelBuilder.Entity("QuestionsTags", b =>
                 {
-                    b.Navigation("QuestionTag");
-                });
+                    b.HasOne("CodeAnswers.Models.Questions", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("CodeAnswers.Models.Tags", b =>
-                {
-                    b.Navigation("QuestionTag");
+                    b.HasOne("CodeAnswers.Models.Tags", null)
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

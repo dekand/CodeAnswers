@@ -400,20 +400,20 @@ namespace CodeAnswers.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("QuestionsTags", b =>
-                {
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
+            //modelBuilder.Entity("QuestionsTags", b =>
+            //    {
+            //        b.Property<int>("QuestionId")
+            //            .HasColumnType("int");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
+            //        b.Property<int>("TagId")
+            //            .HasColumnType("int");
 
-                    b.HasKey("QuestionId", "TagId");
+            //        b.HasKey("QuestionId", "TagId");
 
-                    b.HasIndex("TagId");
+            //        b.HasIndex("TagId");
 
-                    b.ToTable("QuestionsTags");
-                });
+            //        b.ToTable("QuestionsTags");
+            //    });
 
             modelBuilder.Entity("CodeAnswers.Models.QuestionTags", b =>
                 {
@@ -485,20 +485,20 @@ namespace CodeAnswers.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QuestionsTags", b =>
-                {
-                    b.HasOne("CodeAnswers.Models.Questions", null)
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            //modelBuilder.Entity("QuestionsTags", b =>
+            //    {
+            //        b.HasOne("CodeAnswers.Models.Questions", null)
+            //            .WithMany()
+            //            .HasForeignKey("QuestionId")
+            //            .OnDelete(DeleteBehavior.Cascade)
+            //            .IsRequired();
 
-                    b.HasOne("CodeAnswers.Models.Tags", null)
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            //        b.HasOne("CodeAnswers.Models.Tags", null)
+            //            .WithMany()
+            //            .HasForeignKey("TagId")
+            //            .OnDelete(DeleteBehavior.Cascade)
+            //            .IsRequired();
+            //    });
 
             modelBuilder.Entity("CodeAnswers.Models.Questions", b =>
                 {

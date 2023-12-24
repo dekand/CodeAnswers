@@ -10,10 +10,6 @@ namespace CodeAnswers.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public List<Questions> Question { get; set; } = new List<Questions>();
-        public List<QuestionTags> QuestionTag { get; set; } = new List<QuestionTags>();
-
+        public List<Questions> Question { get; set; } = new();
     }
 }
