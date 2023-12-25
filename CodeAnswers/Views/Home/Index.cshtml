@@ -8,87 +8,27 @@
         @foreach (var item in Model)
         {
         <div>
-            <div>
-                <p>N Голосов</p>
-                <p>N Ответов</p>
-            </div>
-            <div class="qstns-list">
-                <div><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></div>
-                <div>
-                    @foreach (var c in item.Tag)
-                    {
-                        <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
-                            @Html.DisplayFor(item => c.Name)
-                        </a>
-                    }
+            <div class="row">
+                <div class="col-auto">
+                    <p>@item.Rating Голосов</p>
+                    <p>@item.Answer.Count Ответов</p>
                 </div>
-            </div>
-            <div>
-                <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.User.Name)</a>
-                <span>спросил @item.PublicationDate</span>
+                <div class="col qstns-list">
+                    <div><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></div>
+                    <div>
+                        @foreach (var c in item.Tag)
+                        {
+                            <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
+                                @Html.DisplayFor(item => c.Name)
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.User.Name)</a>
+                    <span>спросил @item.PublicationDate</span>
+                </div>
             </div>
         </div>
         }
     </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublicationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                <p>Теги</p>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublicationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @foreach (var c in item.Tag)
-                    {
-                        <div>
-                            <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
-                                @Html.DisplayFor(item => c.Name)
-                            </a>
-                        </div>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

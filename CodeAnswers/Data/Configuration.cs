@@ -105,8 +105,27 @@ namespace CodeAnswers.Data
                .WithOne(s => s.User)
                .HasForeignKey(u => u.AuthorId)
                .OnDelete(DeleteBehavior.Restrict);
+            //один-к-одному (Images-Users)
+            builder
+                .HasOne(c => c.Image)
+                .WithOne(s => s.User)
+                .HasForeignKey<Images>(u => u.UserId);
         }
     }
-
+    public class ImagesConfiguration : IEntityTypeConfiguration<Images>
+    {
+        public void Configure(EntityTypeBuilder<Images> builder)
+        {
+            builder.Property(p => p.Id).HasColumnName("id");
+            builder.Property(p => p.ImagePath).HasColumnName("image_path").IsRequired()
+                .HasDefaultValue("/img/default.jpg");
+            builder.Property(p => p.UserId).HasColumnName("user_id").IsRequired();
+            //один-к-одному (Images-Users)
+            builder
+                .HasOne(c => c.User)
+                .WithOne(s => s.Image)
+                .HasForeignKey<Images>(u => u.UserId);
+        }
+    }
 
 }

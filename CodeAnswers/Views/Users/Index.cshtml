@@ -1,71 +1,33 @@
 ﻿@model IEnumerable<CodeAnswers.Models.Users>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Пользователи CodeAnswers";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reputation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LinkSocial)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LinkGithub)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reputation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LinkSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LinkGithub)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h1>Пользователи</h1>
+<form asp-controller="Users" asp-action="Index" method="get">
+    <p>
+        <input type="text" name="SearchString" placeholder="Найти пользователя.." />
+        <input type="submit" value="Найти" />
+    </p>
+</form>
+<div class="usr-list row row-cols-4">
+    @foreach(var item in Model)
+    {
+        <div class="col">
+            <div class="row">
+                <div class="col-auto">
+                    <img src="@item.Image.ImagePath" alt="" />
+                </div>
+                <div class="col">
+                    <div><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></div>
+                    @if (item.Location != null)
+                    {
+                        <div>@item.Location</div>
+                    }
+                    <div><span>@item.Reputation</span></div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

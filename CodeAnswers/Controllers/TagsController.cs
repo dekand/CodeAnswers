@@ -29,11 +29,6 @@ namespace CodeAnswers.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Tags' is null.");
             }
 
-            //Questions? quest1 = _context.Questions.Include(s => s.Tag).FirstOrDefault(s => s.Id == 2);
-            //Tags? tag1 = _context.Tags.FirstOrDefault(c => c.Id == 2);
-            //quest1.Tag.Add(tag1);
-            //_context.SaveChanges();
-
             var tags = from m in _context.Tags
                         select m;
 
@@ -42,7 +37,9 @@ namespace CodeAnswers.Controllers
                 tags = tags.Where(s => s.Name!.Contains(searchString));
             }
 
-            return View(await tags.ToListAsync());
+            return View(await tags
+                .Include(s=>s.Question)
+                .ToListAsync());
         }
 
         // GET: Tags/Details/5

@@ -22,9 +22,23 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Users.ToListAsync());
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Users' is null.");
+            }
+            var users = from m in _context.Users
+                       select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(s => s.Name!.Contains(searchString));
+            }
+
+            return View(await users
+                .Include(c=>c.Image)
+                .ToListAsync());
         }
 
         // GET: Users/Details/5

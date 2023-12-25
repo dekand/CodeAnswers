@@ -12,18 +12,21 @@
         <input type="submit" value="Найти" />
     </p>
 </form>
-<div class="tagsBlock">
+<div class="tagsBlock row row-cols-4">
     @foreach (var item in Model)
     {
-        <div>
-            <div><a href="#">@Html.DisplayFor(modelItem => item.Name)</a></div>
-            <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
-            <div class="row">
-                <div class="col">
-                    *количество вопросов
-                </div>
-                <div class="col">
-                    *количество за неделю
+        <div class="col">
+            <div>
+                <div><a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
+                <div class="row">
+                    <div class="col">
+                        @item.Question.Count вопросов
+                    </div>
+                    <div class="col">
+                        @item.Question.FindAll(f => f.PublicationDate.Month == DateTime.Today.Month).Count за месяц,
+                        @item.Question.FindAll(f => f.PublicationDate.Day == DateTime.Today.Day && f.PublicationDate.Month == DateTime.Today.Month).Count за сегодня
+                    </div>
                 </div>
             </div>
         </div>
