@@ -1,5 +1,6 @@
 using CodeAnswers.Data;
 using CodeAnswers.Models;
+using CodeAnswers.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -24,6 +25,10 @@ namespace CodeAnswers.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //EmailService emailService = new EmailService();
+            //await emailService.SendEmailAsync("lekaxi2675@watrf.com", "Подтвердите регистрацию аккаунта",
+            //           $"Подтвердите регистрацию, перейдя по ссылке: ***ВСТАВИТЬ URL");
+
             return View(await _context.Questions
                 .Include(s => s.Tag)
                 .Include(c=>c.User)
