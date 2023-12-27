@@ -20,7 +20,7 @@
                     <img src="@item.Image.ImagePath" alt="" />
                 </div>
                 <div class="col">
-                    <div><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></div>
+                    <div><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">@item.AspNetUser.UserName</a></div>
                     @if (item.Location != null)
                     {
                         <div>@item.Location</div>

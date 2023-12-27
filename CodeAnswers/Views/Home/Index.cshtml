@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.User.Name)</a>
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.User.AspNetUser.UserName)</a>
                     <span>спросил @item.PublicationDate</span>
                 </div>
             </div>

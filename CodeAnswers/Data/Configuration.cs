@@ -83,9 +83,9 @@ namespace CodeAnswers.Data
         public void Configure(EntityTypeBuilder<Users> builder)
         {
             builder.Property(p => p.Id).HasColumnName("id");
-            builder.Property(p => p.Name).HasColumnName("name").IsRequired();
-            builder.HasIndex(u => u.Name).IsUnique();
-            builder.Property(p => p.Email).HasColumnName("email").IsRequired();
+            //builder.Property(p => p.Name).HasColumnName("name").IsRequired();
+            //builder.HasIndex(u => u.Name).IsUnique();
+            //builder.Property(p => p.Email).HasColumnName("email").IsRequired();
             //builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(p => p.RegistrationDate).HasColumnName("registration_date").IsRequired()
                 .HasDefaultValueSql("getdate()");
@@ -138,6 +138,8 @@ namespace CodeAnswers.Data
     {
         public void Configure(EntityTypeBuilder<AspNetUsers> builder)
         {
+            builder.HasIndex(u => u.UserName).IsUnique();
+            builder.HasIndex(u => u.Email).IsUnique();
             //один-к-одному (AspNetUsers-Users)
             builder
                 .HasOne(c => c.User)
