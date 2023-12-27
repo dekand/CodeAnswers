@@ -4,6 +4,7 @@ using CodeAnswers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeAnswers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231227115601_AspNetUsers")]
+    partial class AspNetUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,11 +181,6 @@ namespace CodeAnswers.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AspNetUsersId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("asp_net_users_id");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -223,9 +221,6 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("reputation");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AspNetUsersId")
-                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -507,17 +502,6 @@ namespace CodeAnswers.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CodeAnswers.Models.Users", b =>
-                {
-                    b.HasOne("CodeAnswers.Models.AspNetUsers", "AspNetUser")
-                        .WithOne("User")
-                        .HasForeignKey("CodeAnswers.Models.Users", "AspNetUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AspNetUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -596,12 +580,6 @@ namespace CodeAnswers.Data.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("CodeAnswers.Models.AspNetUsers", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -86,7 +86,7 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Name).HasColumnName("name").IsRequired();
             builder.HasIndex(u => u.Name).IsUnique();
             builder.Property(p => p.Email).HasColumnName("email").IsRequired();
-            builder.HasIndex(u => u.Name).IsUnique();
+            //builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(p => p.RegistrationDate).HasColumnName("registration_date").IsRequired()
                 .HasDefaultValueSql("getdate()");
             builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
@@ -110,6 +110,13 @@ namespace CodeAnswers.Data
                 .HasOne(c => c.Image)
                 .WithOne(s => s.User)
                 .HasForeignKey<Images>(u => u.UserId);
+            //один-к-одному (AspNetUsers-Users)
+            builder.Property(p => p.AspNetUsersId).HasColumnName("asp_net_users_id").IsRequired();
+            builder.HasIndex(u => u.AspNetUsersId).IsUnique();
+            builder
+                .HasOne(c => c.AspNetUser)
+                .WithOne(s => s.User)
+                .HasForeignKey<Users>(u => u.AspNetUsersId);
         }
     }
     public class ImagesConfiguration : IEntityTypeConfiguration<Images>
@@ -125,6 +132,17 @@ namespace CodeAnswers.Data
                 .HasOne(c => c.User)
                 .WithOne(s => s.Image)
                 .HasForeignKey<Images>(u => u.UserId);
+        }
+    }   
+    public class AspNetUsersConfiguration : IEntityTypeConfiguration<AspNetUsers>
+    {
+        public void Configure(EntityTypeBuilder<AspNetUsers> builder)
+        {
+            //один-к-одному (AspNetUsers-Users)
+            builder
+                .HasOne(c => c.User)
+                .WithOne(s => s.AspNetUser)
+                .HasForeignKey<Users>(u => u.AspNetUsersId);
         }
     }
 

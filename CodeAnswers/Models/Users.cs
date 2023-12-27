@@ -33,5 +33,8 @@ namespace CodeAnswers.Models
         public List<Answers> Answer { get; set; } = new();
         //один-к-одному (Images-Users)
         public Images? Image {  get; set; }
+
+        public string AspNetUsersId { get; set; }
+        public AspNetUsers? AspNetUser {  get; set; }
     }
 }
