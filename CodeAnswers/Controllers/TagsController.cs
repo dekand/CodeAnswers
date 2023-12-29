@@ -51,6 +51,8 @@ namespace CodeAnswers.Controllers
             }
 
             var tags = await _context.Tags
+                .Include(q => q.Question)
+                .ThenInclude(u=>u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tags == null)
             {

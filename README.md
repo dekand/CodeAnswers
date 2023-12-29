@@ -7,6 +7,4 @@
 4) MS SQL Server (local)
 5) Entity Framework (ver 8)
 ## Схема базы данных
-![CodeAnswersDB](pictures/CodeAnswersDB.drawio.svg)
-Плюс таблицы БД для авторизации в процессе..
-
+![CodeAnswersDB](pictures/CodeAnswersDB.svg)

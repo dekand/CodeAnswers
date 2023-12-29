@@ -7,7 +7,6 @@ namespace CodeAnswers.Models
     {
         public int Id { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z0-9]+?$"), StringLength(30, MinimumLength = 3)]
         public string Name { get; set; }
 
         [DataType(DataType.EmailAddress), StringLength(100, MinimumLength = 3)]
@@ -33,5 +32,8 @@ namespace CodeAnswers.Models
         public List<Answers> Answer { get; set; } = new();
         //один-к-одному (Images-Users)
         public Images? Image {  get; set; }
+
+        //public string AspNetUsersId { get; set; }
+        //public AspNetUsers? AspNetUser {  get; set; }
     }
 }

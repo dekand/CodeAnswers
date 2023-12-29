@@ -11,23 +11,30 @@
         <input type="submit" value="Найти" />
     </p>
 </form>
-<div class="usr-list row row-cols-4">
-    @foreach(var item in Model)
+    @if (Model.Any())
     {
-        <div class="col">
-            <div class="row">
-                <div class="col-auto">
-                    <img src="@item.Image.ImagePath" alt="" />
-                </div>
-                <div class="col">
-                    <div><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></div>
-                    @if (item.Location != null)
-                    {
-                        <div>@item.Location</div>
-                    }
-                    <div><span>@item.Reputation</span></div>
+<div class="usr-list row row-cols-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="row">
+                    <div class="col-auto">
+                        <img src="@item.Image.ImagePath" alt="" />
+                    </div>
+                    <div class="col">
+                        <div><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></div>
+                        @if (item.Location != null)
+                        {
+                            <div>@item.Location</div>
+                        }
+                        <div><span>@item.Reputation</span></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 </div>
+}
+else
+{
+    <h3>Пользователи не найдены</h3>
+}

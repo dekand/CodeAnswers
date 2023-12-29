@@ -31,14 +31,15 @@ namespace CodeAnswers.Controllers
             var users = from m in _context.Users
                        select m;
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                users = users.Where(s => s.Name!.Contains(searchString));
-            }
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    users = users.Where(s => s.AspNetUser!.UserName.Contains(searchString));
+            //}
 
             return View(await users
-                .Include(c=>c.Image)
-                .ToListAsync());
+            .Include(c => c.Image)
+            //.Include(u => u.AspNetUser)
+            .ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -70,7 +71,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Email,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
+        public async Task<IActionResult> Create([Bind("Id,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +103,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Email,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
         {
             if (id != users.Id)
             {

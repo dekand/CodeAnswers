@@ -201,8 +201,7 @@ namespace CodeAnswers.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("name");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -218,6 +217,9 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("reputation");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();

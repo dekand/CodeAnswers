@@ -8,27 +8,34 @@
 <p>Тег – это ключевое слово или метка, которая классифицирует ваш вопрос среди других похожих вопросов. Использование правильных тегов поможет другим найти ваш вопрос и ответить на него.</p>
 <form asp-controller="Tags" asp-action="Index" method="get">
     <p>
-        <input type="text" name="SearchString" placeholder="Найти тег по названию.."/>
+        <input type="text" name="SearchString" placeholder="Найти тег по названию.." />
         <input type="submit" value="Найти" />
     </p>
 </form>
-<div class="tagsBlock row row-cols-4">
-    @foreach (var item in Model)
-    {
-        <div class="col">
-            <div>
-                <div><a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
-                <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
-                <div class="row">
-                    <div class="col">
-                        @item.Question.Count вопросов
-                    </div>
-                    <div class="col">
-                        @item.Question.FindAll(f => f.PublicationDate.Month == DateTime.Today.Month).Count за месяц,
-                        @item.Question.FindAll(f => f.PublicationDate.Day == DateTime.Today.Day && f.PublicationDate.Month == DateTime.Today.Month).Count за сегодня
+@if (Model.Any())
+{
+    <div class="tagsBlock row row-cols-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div>
+                    <div><a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                    <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
+                    <div class="row">
+                        <div class="col">
+                            @item.Question.Count вопросов
+                        </div>
+                        <div class="col">
+                            @item.Question.FindAll(f => f.PublicationDate.Month == DateTime.Today.Month).Count за месяц,
+                            @item.Question.FindAll(f => f.PublicationDate.Day == DateTime.Today.Day && f.PublicationDate.Month == DateTime.Today.Month).Count за сегодня
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <h3>Теги не найдены</h3>
+}

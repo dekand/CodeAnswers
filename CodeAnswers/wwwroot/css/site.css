@@ -20,7 +20,7 @@ html {
 body {
     margin-bottom: 60px;
 }
-
+h1{font-size:2rem;}
 .tagsBlock {
     font-size:12px;
 }
@@ -136,4 +136,46 @@ body {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.q-author img{
+    width:32px;
+    height:32px;
+    max-width:32px;
+    max-height:32px;
+    border-radius:5px;
+}
+.q-author {
+    font-size: 13px;
+}
+    .q-author a{
+        text-decoration:none;
+    }
+    .q-date p {
+        font-size: 13px;
+        margin: 0;
+    }
+.q-date p span {color:gray;}
+.after-descr {
+    background-color: hsl(43.64deg 84.62% 94.9%);
+    padding: 13px;
+    font-size: 13px;
+}
+    .after-descr > div {
+        margin:auto;
+    }
+        .after-descr > div p{
+            margin:0;
+            color:gray;
+        }
+            .after-descr > div p span{color:black;}
+            .after-descr > div:nth-child(1) > a {
+                font-size: 13px;
+                color: gray;
+            }
+        .after-descr > div:nth-child(1) > a:hover {
+            color: black;
+        }
+.q-answ{
+    padding:3%;
 }
