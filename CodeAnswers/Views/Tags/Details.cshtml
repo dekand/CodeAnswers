@@ -1,30 +1,59 @@
 ﻿@model CodeAnswers.Models.Tags
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Поиск вопросов по тегу "+Model.Name;
 }
 
-<h1>Details</h1>
+<h1>Тег [@Html.DisplayFor(model => model.Name)]</h1>
 
 <div>
-    <h4>Tags</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Описание
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
+    <hr />
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (Model.Question.Any())
+{
+    <h3>Вопросы с этим тегом:</h3>
+    <div class="top-questions">
+        @foreach (var question in Model.Question)
+        {
+            <div>
+                <div class="row">
+                    <div class="col-auto">
+                        <p>@question.Rating Голосов</p>
+                        <p>@question.Answer.Count Ответов</p>
+                    </div>
+                    <div class="col qstns-list">
+                        <div>
+                            <a asp-controller="Questions" asp-action="Details" asp-route-id="@question.Id">
+                                @Html.DisplayFor(modelItem => question.Title)
+                            </a>
+                        </div>
+                        <div>
+                            @foreach (var c in question.Tag)
+                            {
+                                <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
+                                    @Html.DisplayFor(item => c.Name)
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@question.AuthorId">@question.User.Name</a>
+                        <span>спросил @question.PublicationDate</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h3>Вопросы с этим тегом не найдены</h3>
+}

@@ -1,0 +1,78 @@
+﻿@model CodeAnswers.Models.Questions
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Html.DisplayFor(model => model.Title)</h1>
+
+<div class="row q-date">
+    <div class="col-auto">
+        <p><span>Рейтинг:</span> @Model.Rating</p>
+    </div>
+    <div class="col-auto">
+        <p><span>Ответов:</span> @Model.Answer.Count</p>
+    </div>
+    <div class="col-auto">
+        <p><span>Задан</span> @Model.PublicationDate</p>
+    </div>
+    @if (Model.ModifiedDate.HasValue)
+    {
+        <div class="col-auto">
+            <p><span>Изменен</span> @Model.ModifiedDate</p>
+        </div>
+    }
+</div>
+<hr />
+<div>
+    <div>@Model.Description</div>
+    <div class="row qstns-list after-descr">
+        <div class="col-auto">
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Изменить</a>
+        </div>
+        <div class="col">
+            @foreach (var c in Model.Tag)
+            {
+                <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
+                    @Html.DisplayFor(item => c.Name)
+                </a>
+            }
+        </div>
+        <div class="col-auto q-author">
+           <img src="@Model.User.Image.ImagePath" alt=""/>
+            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.AuthorId">@Model.User.Name</a>
+            <span>спросил @Model.PublicationDate</span>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="q-answ">
+    <h4>Ответы:</h4>
+@if (Model.Answer.Any())
+{
+    @foreach (var answ in Model.Answer)
+    {
+        <div>
+            <div>@answ.Description</div>
+            <div class="row qstns-list after-descr">
+                <div class="col-auto">
+                    <a asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+                </div>
+                <div class="col">
+                    <p>Рейтинг: <span>@answ.Rating</span></p>
+                </div>
+                <div class="col-auto q-author">
+                    <img src="@answ.User.Image.ImagePath" alt="" />
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@Model.User.Name</a>
+                    <span>ответил @answ.PublicationDate</span>
+                </div>
+            </div>
+            <hr />
+        </div>
+    }
+}
+else
+{
+    <h4>Нет ответов</h4>
+    }
+</div>

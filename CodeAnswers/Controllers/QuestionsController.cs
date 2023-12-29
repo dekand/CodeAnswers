@@ -10,39 +10,23 @@ using CodeAnswers.Models;
 
 namespace CodeAnswers.Controllers
 {
-    public class TagsController : Controller
+    public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TagsController(ApplicationDbContext context)
+        public QuestionsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Tags
-        public async Task<IActionResult> Index(string searchString)
+        // GET: Questions
+        public async Task<IActionResult> Index()
         {
-            //return View(await _context.Tags.ToListAsync());
-
-            if (_context.Tags == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Tags' is null.");
-            }
-
-            var tags = from m in _context.Tags
-                        select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                tags = tags.Where(s => s.Name!.Contains(searchString));
-            }
-
-            return View(await tags
-                .Include(s=>s.Question)
-                .ToListAsync());
+            var applicationDbContext = _context.Questions.Include(q => q.User);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Tags/Details/5
+        // GET: Questions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,41 +34,45 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var tags = await _context.Tags
-                .Include(q => q.Question)
-                .ThenInclude(u=>u.User)
+            var questions = await _context.Questions
+                .Include(q => q.User)
+                .ThenInclude(c=>c.Image)
+                .Include(a=>a.Answer)
+                .Include(t=>t.Tag)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tags == null)
+            if (questions == null)
             {
                 return NotFound();
             }
 
-            return View(tags);
+            return View(questions);
         }
 
-        // GET: Tags/Create
+        // GET: Questions/Create
         public IActionResult Create()
         {
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
-        // POST: Tags/Create
+        // POST: Questions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Tags tags)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,PublicationDate,ModifiedDate,Rating,AuthorId")] Questions questions)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tags);
+                _context.Add(questions);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(tags);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", questions.AuthorId);
+            return View(questions);
         }
 
-        // GET: Tags/Edit/5
+        // GET: Questions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,22 +80,23 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var tags = await _context.Tags.FindAsync(id);
-            if (tags == null)
+            var questions = await _context.Questions.FindAsync(id);
+            if (questions == null)
             {
                 return NotFound();
             }
-            return View(tags);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", questions.AuthorId);
+            return View(questions);
         }
 
-        // POST: Tags/Edit/5
+        // POST: Questions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Tags tags)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,PublicationDate,ModifiedDate,Rating,AuthorId")] Questions questions)
         {
-            if (id != tags.Id)
+            if (id != questions.Id)
             {
                 return NotFound();
             }
@@ -116,12 +105,12 @@ namespace CodeAnswers.Controllers
             {
                 try
                 {
-                    _context.Update(tags);
+                    _context.Update(questions);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TagsExists(tags.Id))
+                    if (!QuestionsExists(questions.Id))
                     {
                         return NotFound();
                     }
@@ -132,10 +121,11 @@ namespace CodeAnswers.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tags);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", questions.AuthorId);
+            return View(questions);
         }
 
-        // GET: Tags/Delete/5
+        // GET: Questions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,34 +133,35 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var tags = await _context.Tags
+            var questions = await _context.Questions
+                .Include(q => q.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tags == null)
+            if (questions == null)
             {
                 return NotFound();
             }
 
-            return View(tags);
+            return View(questions);
         }
 
-        // POST: Tags/Delete/5
+        // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tags = await _context.Tags.FindAsync(id);
-            if (tags != null)
+            var questions = await _context.Questions.FindAsync(id);
+            if (questions != null)
             {
-                _context.Tags.Remove(tags);
+                _context.Questions.Remove(questions);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TagsExists(int id)
+        private bool QuestionsExists(int id)
         {
-            return _context.Tags.Any(e => e.Id == id);
+            return _context.Questions.Any(e => e.Id == id);
         }
     }
 }

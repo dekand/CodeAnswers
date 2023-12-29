@@ -7,11 +7,10 @@ namespace CodeAnswers.Models
     {
         public int Id { get; set; }
 
-        //[RegularExpression(@"^[a-zA-Z0-9]+?$"), StringLength(30, MinimumLength = 3)]
-        //public string Name { get; set; }
+        public string Name { get; set; }
 
-        //[DataType(DataType.EmailAddress), StringLength(100, MinimumLength = 3)]
-        //public string Email { get; set; }
+        [DataType(DataType.EmailAddress), StringLength(100, MinimumLength = 3)]
+        public string Email { get; set; }
 
         [Display(Name = "Registration Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime RegistrationDate { get; set; }
@@ -34,7 +33,7 @@ namespace CodeAnswers.Models
         //один-к-одному (Images-Users)
         public Images? Image {  get; set; }
 
-        public string AspNetUsersId { get; set; }
-        public AspNetUsers? AspNetUser {  get; set; }
+        //public string AspNetUsersId { get; set; }
+        //public AspNetUsers? AspNetUser {  get; set; }
     }
 }

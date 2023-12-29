@@ -31,8 +31,8 @@ namespace CodeAnswers.Controllers
 
             return View(await _context.Questions
                 .Include(s => s.Tag)
+                .Include(a => a.Answer)
                 .Include(c=>c.User)
-                .Include(c => c.Answer)
                 .ToListAsync());
         }
 

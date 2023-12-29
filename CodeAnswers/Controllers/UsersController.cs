@@ -31,15 +31,15 @@ namespace CodeAnswers.Controllers
             var users = from m in _context.Users
                        select m;
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                users = users.Where(s => s.AspNetUser.UserName!.Contains(searchString));
-            }
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    users = users.Where(s => s.AspNetUser!.UserName.Contains(searchString));
+            //}
 
             return View(await users
-                .Include(c=>c.Image)
-                //.Include(c=>c.AspNetUser)
-                .ToListAsync());
+            .Include(c => c.Image)
+            //.Include(u => u.AspNetUser)
+            .ToListAsync());
         }
 
         // GET: Users/Details/5
