@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodeAnswers.Data;
 using CodeAnswers.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace CodeAnswers.Controllers
 {
@@ -34,18 +36,36 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var questions = await _context.Questions
+            var question = await _context.Questions
                 .Include(q => q.User)
                 .ThenInclude(c=>c.Image)
                 .Include(a=>a.Answer)
                 .Include(t=>t.Tag)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (questions == null)
+            if (question == null)
             {
                 return NotFound();
             }
 
-            return View(questions);
+            return View(question);
+        }
+        //POST Details
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details([Bind("Description")] Answers answer, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                //answer.AuthorId = _context.Users.FirstOrDefaultAsync( c=>c.Name == userName).Id;
+                //ViewData["testUserName"] = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
+                answer.AuthorId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
+                answer.QuestionId = id;
+                _context.Add(answer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details));
+            }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", answer.AuthorId);
+            return View(answer);
         }
 
         // GET: Questions/Create

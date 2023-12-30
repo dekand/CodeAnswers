@@ -39,40 +39,51 @@
             }
         </div>
         <div class="col-auto q-author">
-           <img src="@Model.User.Image.ImagePath" alt=""/>
+            @* <img src="@Model.User.Image.ImagePath" alt="" /> *@
             <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.AuthorId">@Model.User.Name</a>
             <span>спросил @Model.PublicationDate</span>
         </div>
     </div>
 </div>
 <hr />
-<div class="q-answ">
+<div class="q-ans">
     <h4>Ответы:</h4>
-@if (Model.Answer.Any())
-{
-    @foreach (var answ in Model.Answer)
+    @if (Model.Answer.Any())
     {
-        <div>
-            <div>@answ.Description</div>
-            <div class="row qstns-list after-descr">
-                <div class="col-auto">
-                    <a asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+        @foreach (var answ in Model.Answer)
+        {
+            <div>
+                <div>@Html.Raw(answ.Description)</div>
+                <div class="row qstns-list after-descr">
+                    <div class="col-auto">
+                        <a asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+                    </div>
+                    <div class="col">
+                        <p>Рейтинг: <span>@answ.Rating</span></p>
+                    </div>
+                    <div class="col-auto q-author">
+                        @* <img src="@ViewBag.ImagePath." alt="" /> *@
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@Model.User.Name</a>
+                        <span>ответил @answ.PublicationDate</span>
+                    </div>
                 </div>
-                <div class="col">
-                    <p>Рейтинг: <span>@answ.Rating</span></p>
-                </div>
-                <div class="col-auto q-author">
-                    <img src="@answ.User.Image.ImagePath" alt="" />
-                    <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@Model.User.Name</a>
-                    <span>ответил @answ.PublicationDate</span>
-                </div>
+                <hr />
             </div>
-            <hr />
+        }
+    }
+    else
+    {
+        <h4>Нет ответов</h4>
+    }
+</div>
+<div>   
+    <form asp-action ="Details">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <textarea asp-for="Description" class="form-control" id="ckeditor" placeholder="Напишите свой ответ здесь"></textarea>
         </div>
-    }
-}
-else
-{
-    <h4>Нет ответов</h4>
-    }
+        <div class="form-group">
+            <button type="submit" value="Details" class="btn btn-primary">Ответить</button>
+        </div>
+    </form>
 </div>
