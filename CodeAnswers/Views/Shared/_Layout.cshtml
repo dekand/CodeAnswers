@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CodeAnswers.styles.css" asp-append-version="true" />
+    <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
 </head>
 <body>
     <header>
@@ -57,6 +58,13 @@
                 console.error(error);
             });
     </script>
-
+    <script>
+        document.querySelectorAll('oembed[url]').forEach(element => {
+            const anchor = document.createElement('a');
+            anchor.setAttribute('href', element.getAttribute('url'));
+            anchor.className = 'embedly-card';
+            element.appendChild(anchor);
+        });
+    </script>
 </body>
 </html>

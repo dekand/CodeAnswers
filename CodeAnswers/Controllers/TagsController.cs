@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodeAnswers.Data;
 using CodeAnswers.Models;
+using CodeAnswers.ViewModels;
 
 namespace CodeAnswers.Controllers
 {
@@ -49,17 +50,25 @@ namespace CodeAnswers.Controllers
             {
                 return NotFound();
             }
+            var viewModel = new TagDetailsData();
 
-            var tags = await _context.Tags
+            var tag = await _context.Tags
                 .Include(q => q.Question)
                 .ThenInclude(u=>u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tags == null)
+            if (tag == null)
             {
                 return NotFound();
             }
+            viewModel.Tag = tag;
+            viewModel.Questions = await _context.Questions
+                .Include(c => c.User)
+                .ThenInclude(u => u.Image)
+                .Include(t => t.Tag)
+                .Include(a => a.Answer)
+                .ToListAsync();
 
-            return View(tags);
+            return View(viewModel);
         }
 
         // GET: Tags/Create

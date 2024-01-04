@@ -1,10 +1,11 @@
-﻿@model CodeAnswers.Models.Tags
+﻿@* @model CodeAnswers.Models.Tags *@
+@using CodeAnswers.ViewModels;
+@model TagDetailsData
 @{
-    ViewData["Title"] = "Поиск вопросов по тегу "+Model.Name;
+    ViewData["Title"] = "Поиск вопросов по тегу " + Model.Tag.Name;
 }
 
-<h1>Тег [@Html.DisplayFor(model => model.Name)]</h1>
-
+<h1>Тег [@Html.DisplayFor(model => model.Tag.Name)]</h1>
 <div>
     <hr />
     <dl class="row">
@@ -12,16 +13,16 @@
             Описание
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Tag.Description)
         </dd>
     </dl>
     <hr />
 </div>
-@if (Model.Question.Any())
+@if (Model.Questions.Any())
 {
     <h3>Вопросы с этим тегом:</h3>
     <div class="top-questions">
-        @foreach (var question in Model.Question)
+        @foreach (var question in Model.Questions)
         {
             <div>
                 <div class="row">
@@ -45,6 +46,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
+                        <img class="q-img" src="@question.User.Image.ImagePath" alt="" />
                         <a asp-controller="Users" asp-action="Details" asp-route-id="@question.AuthorId">@question.User.Name</a>
                         <span>спросил @question.PublicationDate</span>
                     </div>

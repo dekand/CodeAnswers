@@ -1,37 +1,41 @@
-﻿@model CodeAnswers.Models.Questions
+﻿@using Microsoft.AspNetCore.Identity
+@using CodeAnswers.ViewModels
+@model QuestionDetailsData
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
-    ViewData["Title"] = Model.Title;
+    // ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Question.Title;
 }
 
-<h1>@Html.DisplayFor(model => model.Title)</h1>
+<h1>@Html.DisplayFor(model => model.Question.Title)</h1>
 
 <div class="row q-date">
     <div class="col-auto">
-        <p><span>Рейтинг:</span> @Model.Rating</p>
+        <p><span>Рейтинг:</span> @Model.Question.Rating</p>
     </div>
     <div class="col-auto">
-        <p><span>Ответов:</span> @Model.Answer.Count</p>
+        <p><span>Ответов:</span> @Model.Question.Answer.Count</p>
     </div>
     <div class="col-auto">
-        <p><span>Задан</span> @Model.PublicationDate</p>
+        <p><span>Задан</span> @Model.Question.PublicationDate</p>
     </div>
-    @if (Model.ModifiedDate.HasValue)
+    @if (Model.Question.ModifiedDate.HasValue)
     {
         <div class="col-auto">
-            <p><span>Изменен</span> @Model.ModifiedDate</p>
+            <p><span>Изменен</span> @Model.Question.ModifiedDate</p>
         </div>
     }
 </div>
 <hr />
 <div>
-    <div>@Model.Description</div>
+    <div>@Html.Raw(Model.Question.Description)</div>
     <div class="row qstns-list after-descr">
         <div class="col-auto">
-            <a asp-action="Edit" asp-route-id="@Model?.Id">Изменить</a>
+            <a asp-action="Edit" asp-route-id="@Model.Question.Id">Изменить</a>
         </div>
         <div class="col">
-            @foreach (var c in Model.Tag)
+            @foreach (var c in Model.Question.Tag)
             {
                 <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
                     @Html.DisplayFor(item => c.Name)
@@ -39,31 +43,31 @@
             }
         </div>
         <div class="col-auto q-author">
-            @* <img src="@Model.User.Image.ImagePath" alt="" /> *@
-            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.AuthorId">@Model.User.Name</a>
-            <span>спросил @Model.PublicationDate</span>
+            <img src="@Model.Question.User.Image.ImagePath" alt="" />
+            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Question.AuthorId">@Model.Question.User.Name</a>
+            <span>спросил @Model.Question.PublicationDate</span>
         </div>
     </div>
 </div>
 <hr />
 <div class="q-ans">
     <h4>Ответы:</h4>
-    @if (Model.Answer.Any())
+    @if (Model.Answers.Any())
     {
-        @foreach (var answ in Model.Answer)
+        @foreach (var answ in Model.Answers)
         {
             <div>
                 <div>@Html.Raw(answ.Description)</div>
                 <div class="row qstns-list after-descr">
                     <div class="col-auto">
-                        <a asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+                        <a asp-controller="Answers" asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
                     </div>
                     <div class="col">
                         <p>Рейтинг: <span>@answ.Rating</span></p>
                     </div>
                     <div class="col-auto q-author">
-                        @* <img src="@ViewBag.ImagePath." alt="" /> *@
-                        <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@Model.User.Name</a>
+                         <img src="@answ.User.Image.ImagePath" alt="" />
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@answ.User.Name</a>
                         <span>ответил @answ.PublicationDate</span>
                     </div>
                 </div>
@@ -75,15 +79,27 @@
     {
         <h4>Нет ответов</h4>
     }
-</div>
-<div>   
+</div> 
+@if(SignInManager.IsSignedIn(User))
+{
+ <div>   
     <form asp-action ="Details">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <textarea asp-for="Description" class="form-control" id="ckeditor" placeholder="Напишите свой ответ здесь"></textarea>
+            <textarea asp-for="@Model.Answer.Description" class="form-control" id="ckeditor" placeholder="Напишите свой ответ здесь"></textarea>
         </div>
         <div class="form-group">
             <button type="submit" value="Details" class="btn btn-primary">Ответить</button>
         </div>
     </form>
-</div>
+    </div>
+}
+else
+{
+    <div>
+        <a  asp-area="Identity" asp-page="/Account/Register">Зарегистрируйтесь</a>
+        или
+        <a  asp-area="Identity" asp-page="/Account/Login">Войдите</a> в учетную запись для того, чтобы оставить свой ответ.
+    </div>
+}
+

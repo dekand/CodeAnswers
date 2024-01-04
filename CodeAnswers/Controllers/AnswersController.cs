@@ -22,7 +22,9 @@ namespace CodeAnswers.Controllers
         // GET: Answers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Answers.Include(a => a.Question).Include(a => a.User);
+            var applicationDbContext = _context.Answers
+                .Include(a => a.Question)
+                .Include(a => a.User);
             return View(await applicationDbContext.ToListAsync());
         }
 

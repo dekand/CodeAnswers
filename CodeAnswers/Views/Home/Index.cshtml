@@ -2,8 +2,18 @@
 @{
     ViewData["Title"] = "Code Answers - Где разработчики обучаются, делятся знаниями и развиваются";
 }
-
-<h1>Топ вопросов</h1>
+<div class="row">
+    <div class="col">
+        <h1>Топ вопросов</h1>
+    </div>
+    <div class="col-auto btn-txt">
+        <a asp-controller="Questions" asp-action="Create">
+            <span class="btn btn-primary">
+                Задать вопрос
+            </span>
+        </a>
+    </div>
+</div>
 @if (Model.Any())
 {
     <div class="top-questions">
@@ -21,13 +31,16 @@
                             @foreach (var c in item.Tag)
                             {
                                 <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
-                                    @Html.DisplayFor(item => c.Name)
+                                    @c.Name
                                 </a>
                             }
                         </div>
                     </div>
                     <div class="col-auto">
-                        <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayFor(modelItem => item.User.Name)</a>
+                        <img class="q-img" src="@item.User.Image.ImagePath" alt="" />
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">
+                            @Html.DisplayFor(modelItem => item.User.Name)
+                        </a>
                         <span>спросил @item.PublicationDate</span>
                     </div>
                 </div>

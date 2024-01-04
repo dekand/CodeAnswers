@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CodeAnswers.Data;
+using CodeAnswers.Data.Migrations;
+using CodeAnswers.Models;
+using CodeAnswers.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
-using CodeAnswers.Data;
-using CodeAnswers.Models;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace CodeAnswers.Controllers
@@ -36,18 +35,30 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
+            var viewModel = new QuestionDetailsData();
             var question = await _context.Questions
                 .Include(q => q.User)
-                .ThenInclude(c=>c.Image)
-                .Include(a=>a.Answer)
-                .Include(t=>t.Tag)
+                .ThenInclude(c => c.Image)
+                .Include(a => a.Answer)
+                .Include(t => t.Tag)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (question == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            viewModel.Question = question;
+            viewModel.Answers = await _context.Answers
+            .Include(q => q.User)
+            .ThenInclude(c => c.Image)
+            .Include(a => a.Question)
+            .Where(a => a.QuestionId == id)
+            .OrderByDescending(c => c.Rating)
+            .ThenBy(c=>c.PublicationDate)
+            .ToListAsync();
+
+            return View(viewModel);
         }
         //POST Details
         [HttpPost]
@@ -56,40 +67,42 @@ namespace CodeAnswers.Controllers
         {
             if (ModelState.IsValid)
             {
-                //answer.AuthorId = _context.Users.FirstOrDefaultAsync( c=>c.Name == userName).Id;
-                //ViewData["testUserName"] = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
                 answer.AuthorId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
                 answer.QuestionId = id;
                 _context.Add(answer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", answer.AuthorId);
-            return View(answer);
+            return RedirectToAction(nameof(Details));
         }
-
         // GET: Questions/Create
-        public IActionResult Create()
+        [Authorize]
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email");
-            return View();
+            var tags = await _context.Tags
+                .Include(c => c.Question)
+                .ToListAsync();
+            return View(tags);
         }
 
         // POST: Questions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,PublicationDate,ModifiedDate,Rating,AuthorId")] Questions questions)
+        public async Task<IActionResult> Create([Bind("Title,Description")] Questions question)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(questions);
+                 var authorId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id; 
+                if(authorId==0) { return NotFound(); }
+                question.AuthorId = authorId;
+                _context.Add(question);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect("/Home/Index");
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", questions.AuthorId);
-            return View(questions);
+            return View(question);
         }
 
         // GET: Questions/Edit/5

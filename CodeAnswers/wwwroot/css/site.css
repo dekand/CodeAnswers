@@ -20,7 +20,7 @@ html {
 body {
     margin-bottom: 60px;
 }
-h1{font-size:2rem;}
+h1{font-size:1.7rem;}
 .tagsBlock {
     font-size:12px;
 }
@@ -178,4 +178,28 @@ h1{font-size:2rem;}
         }
 .q-ans{
     padding:3%;
+}
+.btn-txt {
+    margin: auto;
+}
+
+    .btn-txt span {
+        color: white;
+        text-decoration: none;
+        font-size: 13px;
+    }
+.q-img {
+    width: 20px;
+    height: 20px;
+    max-height: 20px;
+    max-height: 20px;
+    border-radius: 3px;
+    margin:0 5px 0 0;
+}
+.form-group .btn.btn-primary{
+    margin:10px 0;
+}
+.form-group .control-label{
+    margin:10px 0;
+    font-weight:600;
 }
