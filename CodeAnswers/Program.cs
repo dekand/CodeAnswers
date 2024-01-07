@@ -1,6 +1,8 @@
 using CodeAnswers.Data;
+using CodeAnswers.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 
 namespace CodeAnswers
 {
@@ -19,7 +21,8 @@ namespace CodeAnswers
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
+            //email service created by Depedency Injection - Scoped
+            builder.Services.AddScoped<EmailService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

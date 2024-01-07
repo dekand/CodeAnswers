@@ -1,11 +1,9 @@
 ﻿using CodeAnswers.Data;
-using CodeAnswers.Data.Migrations;
 using CodeAnswers.Models;
 using CodeAnswers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -55,7 +53,7 @@ namespace CodeAnswers.Controllers
             .Include(a => a.Question)
             .Where(a => a.QuestionId == id)
             .OrderByDescending(c => c.Rating)
-            .ThenBy(c=>c.PublicationDate)
+            .ThenBy(c => c.PublicationDate)
             .ToListAsync();
 
             return View(viewModel);
@@ -79,10 +77,9 @@ namespace CodeAnswers.Controllers
         [Authorize]
         public async Task<IActionResult> Create(int id)
         {
-            var tags = await _context.Tags
-                .Include(c => c.Question)
-                .ToListAsync();
-            return View(tags);
+            ViewData["tagsList"] = new SelectList(_context.Tags, "Id", "Name");
+
+            return View();
         }
 
         // POST: Questions/Create
@@ -90,19 +87,31 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description")] Questions question)
+        public async Task<IActionResult> Create([Bind("QuestionTitle,QuestionDescription,TagsId")] QuestionCreateData model)
         {
             if (ModelState.IsValid)
             {
-                 var authorId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id; 
-                if(authorId==0) { return NotFound(); }
+                var question = new Questions() { Title = model.QuestionTitle, Description = model.QuestionDescription };
+
+                var users = await _context.Users
+                        .ToListAsync();
+                int authorId = users.Find(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
+                if (authorId == 0) { return NotFound(); }
                 question.AuthorId = authorId;
+                List<Tags> tagsList = await (from tag in _context.Tags
+                                             select tag).ToListAsync();
+
+                foreach (var tagId in model.TagsId)
+                {
+                    question.Tag.Add(tagsList.FirstOrDefault(c => c.Id == tagId));
+                }
                 _context.Add(question);
+
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return Redirect("/Home/Index");
             }
-            return View(question);
+            ViewData["tagsList"] = new SelectList(_context.Tags, "Id", "Name");
+            return View();
         }
 
         // GET: Questions/Edit/5

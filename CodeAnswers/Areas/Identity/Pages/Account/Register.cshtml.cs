@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Runtime.Intrinsics.X86;
+using CodeAnswers.Services;
 
 namespace CodeAnswers.Areas.Identity.Pages.Account
 {
@@ -30,14 +31,15 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailService _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            EmailService emailSender            )
+
         {
             _userManager = userManager;
             _userStore = userStore;

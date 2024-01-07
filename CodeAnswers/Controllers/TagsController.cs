@@ -66,6 +66,7 @@ namespace CodeAnswers.Controllers
                 .ThenInclude(u => u.Image)
                 .Include(t => t.Tag)
                 .Include(a => a.Answer)
+                .Where(c=>c.Tag.Contains(tag))
                 .ToListAsync();
 
             return View(viewModel);

@@ -1,4 +1,5 @@
-﻿@model CodeAnswers.Models.Questions
+﻿@using CodeAnswers.ViewModels
+@model QuestionCreateData
 
 @{
     ViewData["Title"] = "Задать новый вопрос";
@@ -10,19 +11,22 @@
 <hr />
 
 <div>
-    @* ПОЧИНИТЬ СТРАНИЦУ *@
-    @* ДОБАВИТЬ ВЫБОР ТЕГОВ! *@
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Title" class="control-label">Заголовок</label>
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
+            <label asp-for="QuestionTitle" class="control-label">Заголовок</label>
+            <input asp-for="QuestionTitle" class="form-control"/>
+            <span asp-validation-for="QuestionTitle" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Description" class="control-label">Описание проблемы</label>
-            <textarea asp-for="Description" class="form-control" id="ckeditor"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+            <label asp-for="QuestionDescription" class="control-label">Описание проблемы</label>
+            <textarea asp-for="QuestionDescription" class="form-control" id="ckeditor"></textarea>
+            <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TagsId" class="control-label">Выбери несколько тегов</label>
+            <select asp-for="TagsId" class="form-control"
+                    asp-items="ViewBag.tagsList"></select>
         </div>
         <div class="form-group">
             <input type="submit" value="Create" class="btn btn-primary" />
