@@ -1,60 +1,106 @@
 ﻿@model CodeAnswers.Models.Users
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Профиль пользователя "+Model.Name;
 }
-
-<h1>Details</h1>
-
+<div class="row">
+    <div class="col-auto">
+        <img src="@Model.Image.ImagePath" alt="" width="150" height="150"/>
+    </div>
+    <div class="col-auto">
+        <p>Репутация: <strong>@Model.Reputation</strong></p>
+        <p>Вопросов: <strong>@Model.Question.Count</strong></p>
+        <p>Ответов: <strong>@Model.Answer.Count</strong></p>
+    </div>
+    <div class="col">
+        <div><h1>@Html.DisplayFor(model => model.Name)</h1></div>
+        <div><p>Дата регистрации: @Model.RegistrationDate.Date.ToString("dd.MM.yyyy")</p></div>
+        @if (Model.Location != null)
+        {
+            <div>
+                <p>
+                    Местоположение: @Html.DisplayFor(model => model.Location)
+                </p>
+            </div>
+        }
+        <div>
+            <span>Ссылки: </span>
+            @if (Model.LinkGithub != null)
+                {
+                    <a href="@Model.LinkGithub">GitHub</a>
+                }
+                
+                @if (Model.LinkSocial != null)
+                {
+                <a href="@Model.LinkSocial">Social</a>
+                }
+        </div>
+    </div>
+</div>
+<hr />
 <div>
-    <h4>Users</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @* @Html.DisplayNameFor(model => model.AspNetUser.UserName) *@
-        </dt>
-        <dd class = "col-sm-10">
-            @* @Html.DisplayFor(model => model.AspNetUser.UserName) *@
-        </dd>
-        <dt class = "col-sm-2">
-            @* @Html.DisplayNameFor(model => model.AspNetUser.Email) *@
-        </dt>
-        <dd class = "col-sm-10">
-            @* @Html.DisplayFor(model => model.AspNetUser.Email) *@
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistrationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegistrationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Reputation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reputation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LinkSocial)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LinkSocial)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LinkGithub)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LinkGithub)
-        </dd>
-    </dl>
+    <h2>Обо мне</h2>
+    <div>
+        @if(Model.About!=null){
+            @Html.Raw(Model.About)
+        }
+        else
+        {
+            <p>Здесь ничего нет.</p>
+        }
+    </div>
+</div>
+<hr />
+<div>
+    <h2>Заданные вопросы</h2>
+    <div class="row">
+        @if (Model.Question.Count > 0)
+        {
+            @foreach (var q in Model.Question)
+            {
+                <div class="col-auto">
+                    <p>Рейтинг: <strong>@q.Rating</strong></p>
+                    <p>Ответов: <strong>@q.Answer.Count</strong></p>
+                </div>
+                <div class="col">
+                <a asp-controller="Questions" asp-action="Details" asp-route-id="@q.Id">@q.Title</a>
+                </div>
+                <div class="col-auto">
+                    <p>@q.PublicationDate</p>
+                </div>
+                <div class="w-100"></div>
+                <hr />
+            }
+        }
+        else
+        {
+            <p>Вопросов нет.</p>
+        }
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <h2>Оставил ответы на вопросы</h2>
+    <div class="row">
+        @if (Model.Answer.Count > 0)
+        {
+            @foreach (var a in Model.Answer)
+            {
+                <div class="col-auto">
+                    <p>Рейтинг: <strong>@a.Rating</strong></p>
+                </div>
+                <div class="col">
+                    <a asp-controller="Questions" asp-action="Details" asp-route-id="@a.QuestionId">@Html.Raw(a.Description)</a>
+                </div>
+                <div class="col-auto">
+                    <p>@a.PublicationDate</p>
+                </div>
+                <div class="w-100"></div>
+                <hr />
+            }
+        }
+        else
+        {
+            <p>Ответов нет.</p>
+        }
+    </div>
 </div>

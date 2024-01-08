@@ -16,6 +16,7 @@ namespace CodeAnswers.Models
         public DateTime RegistrationDate { get; set; }
 
         public int Reputation { get; set; }
+        public string? About { get; set; }
 
         [StringLength(255, MinimumLength = 3)]
         public string? Location { get; set; }
@@ -32,8 +33,5 @@ namespace CodeAnswers.Models
         public List<Answers> Answer { get; set; } = new();
         //один-к-одному (Images-Users)
         public Images? Image {  get; set; }
-
-        //public string AspNetUsersId { get; set; }
-        //public AspNetUsers? AspNetUser {  get; set; }
     }
 }

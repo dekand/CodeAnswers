@@ -94,6 +94,7 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Location).HasColumnName("location");
             builder.Property(p => p.LinkSocial).HasColumnName("link_social");
             builder.Property(p => p.LinkGithub).HasColumnName("link_github");
+            builder.Property(p => p.About).HasColumnName("about");
             //один-ко-многим (Users-Questions)
             builder
                .HasMany(c => c.Question)
@@ -110,13 +111,6 @@ namespace CodeAnswers.Data
                 .HasOne(c => c.Image)
                 .WithOne(s => s.User)
                 .HasForeignKey<Images>(u => u.UserId);
-            ////один-к-одному (AspNetUsers-Users)
-            //builder.Property(p => p.AspNetUsersId).HasColumnName("asp_net_users_id").IsRequired();
-            //builder.HasIndex(u => u.AspNetUsersId).IsUnique();
-            //builder
-            //    .HasOne(c => c.AspNetUser)
-            //    .WithOne(s => s.User)
-            //    .HasForeignKey<Users>(u => u.AspNetUsersId);
         }
     }
     public class ImagesConfiguration : IEntityTypeConfiguration<Images>
@@ -124,6 +118,8 @@ namespace CodeAnswers.Data
         public void Configure(EntityTypeBuilder<Images> builder)
         {
             builder.Property(p => p.Id).HasColumnName("id");
+            builder.Property(p => p.Name).HasColumnName("name").IsRequired()
+                .HasDefaultValue("default.jpg");
             builder.Property(p => p.ImagePath).HasColumnName("image_path").IsRequired()
                 .HasDefaultValue("/img/default.jpg");
             builder.Property(p => p.UserId).HasColumnName("user_id").IsRequired();
@@ -134,18 +130,5 @@ namespace CodeAnswers.Data
                 .HasForeignKey<Images>(u => u.UserId);
         }
     }   
-    //public class AspNetUsersConfiguration : IEntityTypeConfiguration<AspNetUsers>
-    //{
-    //    public void Configure(EntityTypeBuilder<AspNetUsers> builder)
-    //    {
-    //        builder.HasIndex(u => u.UserName).IsUnique();
-    //        builder.HasIndex(u => u.Email).IsUnique();
-    //        //один-к-одному (AspNetUsers-Users)
-    //        builder
-    //            .HasOne(c => c.User)
-    //            .WithOne(s => s.AspNetUser)
-    //            .HasForeignKey<Users>(u => u.AspNetUsersId);
-    //    }
-    //}
 
 }

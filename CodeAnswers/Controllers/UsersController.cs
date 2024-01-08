@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CodeAnswers.Data;
 using CodeAnswers.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing;
 
 namespace CodeAnswers.Controllers
 {
@@ -51,6 +52,9 @@ namespace CodeAnswers.Controllers
             }
 
             var users = await _context.Users
+                .Include(c => c.Image)
+                .Include(c=>c.Answer)
+                .Include(c=>c.Question)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {
