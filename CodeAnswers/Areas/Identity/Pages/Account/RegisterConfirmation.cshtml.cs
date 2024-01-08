@@ -52,7 +52,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("/Index");
             }
-            returnUrl = returnUrl ?? Url.Content("~/");
+            //returnUrl = returnUrl ?? Url.Content("~/");
 
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -60,36 +60,36 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
-            Email = email;
+            //Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = false;
-            if (DisplayConfirmAccountLink)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                EmailConfirmationUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
-            }
-            else
-            {
-                // генерация токена для пользователя
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                EmailConfirmationUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: HttpContext.Request.Scheme);
+            //DisplayConfirmAccountLink = false;
+            //if (DisplayConfirmAccountLink)
+            //{
+            //    var userId = await _userManager.GetUserIdAsync(user);
+            //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //    EmailConfirmationUrl = Url.Page(
+            //        "/Account/ConfirmEmail",
+            //        pageHandler: null,
+            //        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+            //        protocol: Request.Scheme);
+            //}
+            //else
+            //{
+            //    // генерация токена для пользователя
+            //    var userId = await _userManager.GetUserIdAsync(user);
+            //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //    EmailConfirmationUrl = Url.Page(
+            //        "/Account/ConfirmEmail",
+            //        pageHandler: null,
+            //        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+            //        protocol: HttpContext.Request.Scheme);
 
-                EmailService emailService = new EmailService();
-                await emailService.SendEmailAsync(email, "Подтвердите регистрацию аккаунта",
-                           $"Подтвердите регистрацию, перейдя по ссылке: <a href='{EmailConfirmationUrl}'>link</a>");
-            }
+            //    EmailService emailService = new EmailService();
+            //    await emailService.SendEmailAsync(email, "Подтвердите регистрацию аккаунта",
+            //               $"Подтвердите регистрацию, перейдя по ссылке: <a href='{EmailConfirmationUrl}'>link</a>");
+            //}
 
             return Page();
         }
