@@ -51,6 +51,7 @@
     </div>
 </div>
 <hr />
+<div class="qst-answ-list">
 <div>
     <h2>Заданные вопросы</h2>
     <div class="row">
@@ -88,7 +89,7 @@
                 <div class="col-auto">
                     <p>Рейтинг: <strong>@a.Rating</strong></p>
                 </div>
-                <div class="col">
+                <div class="col ans-demo">
                     <a asp-controller="Questions" asp-action="Details" asp-route-id="@a.QuestionId">@Html.Raw(a.Description)</a>
                 </div>
                 <div class="col-auto">
@@ -103,4 +104,5 @@
             <p>Ответов нет.</p>
         }
     </div>
+</div>
 </div>
