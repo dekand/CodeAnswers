@@ -17,6 +17,8 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Description).HasColumnName("description").IsRequired();
             builder.Property(p => p.Rating).HasColumnName("rating").IsRequired()
                 .HasDefaultValue(0);
+            builder.Property(p => p.Accepted).HasColumnName("accepted").IsRequired()
+                .HasDefaultValue(false);
             //один-ко-многим (Users-Answers)
             builder
                .HasOne(c => c.User)
@@ -44,6 +46,8 @@ namespace CodeAnswers.Data
             builder.Property(p => p.ModifiedDate).HasColumnName("modified_date");
             builder.Property(p => p.Rating).HasColumnName("rating")
                 .HasDefaultValue(0);
+            builder.Property(p => p.Answered).HasColumnName("answered").IsRequired()
+                .HasDefaultValue(false);
             //многие-ко-многим (Questions-Tags)
             builder
                .HasMany(c => c.Tag)
@@ -89,6 +93,7 @@ namespace CodeAnswers.Data
             builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(p => p.RegistrationDate).HasColumnName("registration_date").IsRequired()
                 .HasDefaultValueSql("getdate()");
+            //СДЕЛАТЬ СТОЛБЕЦ ВЫЧИСЛЯЕМЫМ = Questions.rating+Answers.rating
             builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
                 .HasDefaultValue(0);
             builder.Property(p => p.Location).HasColumnName("location");

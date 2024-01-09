@@ -9,6 +9,7 @@ namespace CodeAnswers.Models
 
         [Display(Name = "Publication Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime PublicationDate { get; set; }
+        public bool Accepted { get; set; }
 
         public int Rating { get; set; }
         //один-ко-многим (Users-Answers)

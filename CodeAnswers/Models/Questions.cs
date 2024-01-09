@@ -18,6 +18,7 @@ namespace CodeAnswers.Models
         public DateTime? ModifiedDate { get; set; }
 
         public int? Rating { get; set; }
+        public bool Answered { get; set; }
 
         //многие-ко-многим (Questions-Tags)
         public List<Tags> Tag { get; set; } = new();
