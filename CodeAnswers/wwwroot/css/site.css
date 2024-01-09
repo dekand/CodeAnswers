@@ -16,7 +16,8 @@ html {
     position: relative;
     min-height: 100%;
 }
-
+p{margin-bottom:0.5rem;
+}
 body {
     margin-bottom: 60px;
 }
@@ -203,3 +204,14 @@ h1{font-size:1.7rem;}
     margin:10px 0;
     font-weight:600;
 }
+.ans-demo {
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.qst-answ-list .col, .col-auto{
+    margin:auto;
+}
+.search-form{display:inline-flex;}
+.search-form input{margin-right:5px;}

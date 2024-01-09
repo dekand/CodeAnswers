@@ -5,11 +5,9 @@
 }
 
 <h1>Пользователи</h1>
-<form asp-controller="Users" asp-action="Index" method="get">
-    <p>
-        <input type="text" name="SearchString" placeholder="Найти пользователя.." />
-        <input type="submit" value="Найти" />
-    </p>
+<form class="search-form"  asp-controller="Users" asp-action="Index" method="get">
+        <input class="form-control form-control-sm" type="text" name="SearchString" placeholder="Найти пользователя.." />
+        <input class="btn btn-primary btn-sm"  type="submit" value="Найти" />
 </form>
     @if (Model.Any())
     {

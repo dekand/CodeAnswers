@@ -23,7 +23,6 @@ namespace CodeAnswers.Controllers
         // GET: Tags
         public async Task<IActionResult> Index(string searchString)
         {
-            //return View(await _context.Tags.ToListAsync());
 
             if (_context.Tags == null)
             {

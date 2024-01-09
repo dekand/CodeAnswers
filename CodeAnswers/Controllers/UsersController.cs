@@ -32,14 +32,13 @@ namespace CodeAnswers.Controllers
             var users = from m in _context.Users
                        select m;
 
-            //if (!String.IsNullOrEmpty(searchString))
-            //{
-            //    users = users.Where(s => s.AspNetUser!.UserName.Contains(searchString));
-            //}
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(s => s.Name!.Contains(searchString));
+            }
 
             return View(await users
             .Include(c => c.Image)
-            //.Include(u => u.AspNetUser)
             .ToListAsync());
         }
 

@@ -6,11 +6,9 @@
 
 <h1>Теги</h1>
 <p>Тег – это ключевое слово или метка, которая классифицирует ваш вопрос среди других похожих вопросов. Использование правильных тегов поможет другим найти ваш вопрос и ответить на него.</p>
-<form asp-controller="Tags" asp-action="Index" method="get">
-    <p>
-        <input type="text" name="SearchString" placeholder="Найти тег по названию.." />
-        <input type="submit" value="Найти" />
-    </p>
+<form class="search-form" asp-controller="Tags" asp-action="Index" method="get">
+        <input class="form-control form-control-sm" type="text" name="SearchString" placeholder="Найти тег по названию.." />
+        <input class="btn btn-primary btn-sm"  type="submit" value="Найти" />
 </form>
 @if (Model.Any())
 {

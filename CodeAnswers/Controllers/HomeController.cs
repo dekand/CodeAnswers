@@ -10,22 +10,30 @@ namespace CodeAnswers.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        //private readonly ILogger<HomeController> _logger;
-
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Questions
+            if (_context.Questions == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Questions' is null.");
+            }
+
+            var questions = from m in _context.Questions
+                       select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                questions = questions.Where(s => s.Title!.Contains(searchString));
+            }
+
+            return View(await questions
                 .Include(s => s.Tag)
                 .Include(a => a.Answer)
                 .Include(c => c.User)
