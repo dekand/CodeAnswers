@@ -98,7 +98,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account.Manage
                 case "image/png": return ".png";
                 case "image/gif": return ".gif";
             }
-            return "image/jpeg";
+            return ".jpeg";
         }
     }
 }
