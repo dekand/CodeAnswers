@@ -11,7 +11,7 @@
 <p>Репутация: <strong>@Model.Users.Reputation</strong></p>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
              <input type="hidden" asp-for="Users.Id"/>
@@ -33,7 +33,12 @@
                 <label asp-for="Users.LinkGithub" class="control-label"></label>
                 <input asp-for="Users.LinkGithub" class="form-control" type="url"/>
                 <span asp-validation-for="Users.LinkGithub" class="text-danger"></span>
-            </div>           
+            </div>   
+            <div class="form-group">
+                <label asp-for="Users.About" class="control-label"></label>
+                <textarea id="ckeditor" asp-for="Users.About" class="form-control"></textarea>
+                <span asp-validation-for="Users.About" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
             </div>
