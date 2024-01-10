@@ -38,6 +38,8 @@ namespace CodeAnswers.Controllers
                 .Include(a => a.Answer)
                 .Include(c => c.User)
                 .ThenInclude(u => u.Image)
+                .OrderByDescending(o=>o.Rating)
+                .ThenByDescending(o=>o.PublicationDate)
                 .ToListAsync());
         }
 

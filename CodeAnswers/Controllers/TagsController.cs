@@ -66,6 +66,8 @@ namespace CodeAnswers.Controllers
                 .Include(t => t.Tag)
                 .Include(a => a.Answer)
                 .Where(c=>c.Tag.Contains(tag))
+                .OrderByDescending(o => o.Rating)
+                .ThenByDescending(o => o.PublicationDate)
                 .ToListAsync();
 
             return View(viewModel);

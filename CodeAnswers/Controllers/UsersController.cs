@@ -39,6 +39,8 @@ namespace CodeAnswers.Controllers
 
             return View(await users
             .Include(c => c.Image)
+            .OrderByDescending(o=>o.Reputation)
+            .ThenBy(o=>o.Name)
             .ToListAsync());
         }
 

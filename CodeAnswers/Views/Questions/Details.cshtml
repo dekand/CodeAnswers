@@ -50,13 +50,27 @@
     </div>
 </div>
 <hr />
-<div class="q-ans">
+<div class="row q-ans">
     <h4>Ответы:</h4>
     @if (Model.Answers.Any())
     {
         @foreach (var answ in Model.Answers)
         {
-            <div>
+            <div class="col-auto row">
+                @if (answ.Accepted)
+                {
+                    <div class="answ-checked col"></div>
+                }
+                <div class="show-rating col">
+                    @answ.Rating
+                </div>
+                <div class="w-100"></div>
+                <div class="col"><button type="button" class="btn btn-light like-rating-btn col"></button></div>
+                <div class="col">
+                    <button type="button" class="btn btn-light dislike-rating-btn col"></button>
+                </div>
+            </div>
+            <div class="col">
                 <div>@Html.Raw(answ.Description)</div>
                 <div class="row qstns-list after-descr">
                     <div class="col-auto">
@@ -71,8 +85,9 @@
                         <span>ответил @answ.PublicationDate</span>
                     </div>
                 </div>
-                <hr />
             </div>
+            <hr />
+            <div class="w-100"></div>
         }
     }
     else
