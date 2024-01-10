@@ -47,7 +47,7 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Rating).HasColumnName("rating")
                 .HasDefaultValue(0);
             builder.Property(p => p.Answered).HasColumnName("answered").IsRequired()
-                .HasDefaultValue(false);
+                .HasComputedColumnSql("[dbo].[Fun_Answered]([id])");
             //многие-ко-многим (Questions-Tags)
             builder
                .HasMany(c => c.Tag)
@@ -95,7 +95,7 @@ namespace CodeAnswers.Data
                 .HasDefaultValueSql("getdate()");
             //СДЕЛАТЬ СТОЛБЕЦ ВЫЧИСЛЯЕМЫМ = Questions.rating+Answers.rating
             builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
-                .HasDefaultValue(0);
+                .HasComputedColumnSql("[dbo].[Fun_ReputationCalc]([id])");
             builder.Property(p => p.Location).HasColumnName("location");
             builder.Property(p => p.LinkSocial).HasColumnName("link_social");
             builder.Property(p => p.LinkGithub).HasColumnName("link_github");
