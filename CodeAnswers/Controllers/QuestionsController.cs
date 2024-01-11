@@ -136,7 +136,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,PublicationDate,ModifiedDate,Rating,AuthorId")] Questions questions)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,PublicationDate,ModifiedDate,AuthorId")] Questions questions)
         {
             if (id != questions.Id)
             {
@@ -147,7 +147,9 @@ namespace CodeAnswers.Controllers
             {
                 try
                 {
+                    questions.ModifiedDate=DateTime.Now;
                     _context.Update(questions);
+            //ПРОБЛЕМА ПРИ СОХРАНЕНИИ СТОЛБЦА ANSWERED ТК ОН ВЫЧИСЛЯЕМЫЙ
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
