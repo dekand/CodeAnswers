@@ -12,6 +12,7 @@
         </a>
     </div>
 </div>
+<h6>Вопросы без ответа: @Model.Where(c=>c.Answered==false).Count()</h6>
 @if (Model.Any())
 {
     <div class="top-questions">
