@@ -47,7 +47,7 @@ namespace CodeAnswers.Data
             builder.Property(p => p.Rating).HasColumnName("rating")
                 .HasDefaultValue(0);
             builder.Property(p => p.Answered).HasColumnName("answered").IsRequired()
-                .HasComputedColumnSql("[dbo].[Fun_Answered]([id])");
+                .HasDefaultValue(false);
             //многие-ко-многим (Questions-Tags)
             builder
                .HasMany(c => c.Tag)

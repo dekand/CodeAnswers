@@ -136,7 +136,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,PublicationDate,ModifiedDate,AuthorId")] Questions questions)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,PublicationDate,ModifiedDate,AuthorId,Rating,Answered")] Questions questions)
         {
             if (id != questions.Id)
             {
@@ -149,7 +149,6 @@ namespace CodeAnswers.Controllers
                 {
                     questions.ModifiedDate=DateTime.Now;
                     _context.Update(questions);
-            //ПРОБЛЕМА ПРИ СОХРАНЕНИИ СТОЛБЦА ANSWERED ТК ОН ВЫЧИСЛЯЕМЫЙ
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -163,7 +162,7 @@ namespace CodeAnswers.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Redirect($"/Questions/Details/{id}");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", questions.AuthorId);
             return View(questions);
@@ -200,7 +199,7 @@ namespace CodeAnswers.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Home/Index");
         }
 
         private bool QuestionsExists(int id)
