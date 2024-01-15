@@ -27,5 +27,7 @@ namespace CodeAnswers.Models
         public Users? User { get; set; }
         //один-ко-многим (Questions-Answers)
         public List<Answers> Answer { get; set; } = new();
+        //один-ко-многим (Questions-QuestionsRating)
+        public List<QuestionsRating> QuestionRatings { get; set; } = new();
     }
 }

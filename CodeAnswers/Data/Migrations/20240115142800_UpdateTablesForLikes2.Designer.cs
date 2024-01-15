@@ -4,6 +4,7 @@ using CodeAnswers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeAnswers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115142800_UpdateTablesForLikes2")]
+    partial class UpdateTablesForLikes2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,26 +89,16 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("answer_id");
 
                     b.Property<bool>("Dislikes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("dislikes");
 
                     b.Property<bool>("Likes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("likes");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AnswerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("AnswersRating");
                 });
@@ -209,30 +202,20 @@ namespace CodeAnswers.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Dislikes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("dislikes");
 
                     b.Property<bool>("Likes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("likes");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int")
                         .HasColumnName("question_id");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("QuestionsRating");
                 });
@@ -570,15 +553,7 @@ namespace CodeAnswers.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CodeAnswers.Models.Users", "User")
-                        .WithMany("AnswerRatings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Answer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CodeAnswers.Models.Images", b =>
@@ -611,15 +586,7 @@ namespace CodeAnswers.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CodeAnswers.Models.Users", "User")
-                        .WithMany("QuestionRatings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Question");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -704,13 +671,9 @@ namespace CodeAnswers.Data.Migrations
                 {
                     b.Navigation("Answer");
 
-                    b.Navigation("AnswerRatings");
-
                     b.Navigation("Image");
 
                     b.Navigation("Question");
-
-                    b.Navigation("QuestionRatings");
                 });
 #pragma warning restore 612, 618
         }

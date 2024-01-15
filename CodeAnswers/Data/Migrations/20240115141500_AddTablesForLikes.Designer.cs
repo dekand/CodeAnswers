@@ -4,6 +4,7 @@ using CodeAnswers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeAnswers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115141500_AddTablesForLikes")]
+    partial class AddTablesForLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,15 +89,11 @@ namespace CodeAnswers.Data.Migrations
                         .HasColumnName("answer_id");
 
                     b.Property<bool>("Dislikes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("dislikes");
 
                     b.Property<bool>("Likes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("likes");
 
                     b.Property<int>("UserId")
@@ -209,15 +208,11 @@ namespace CodeAnswers.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Dislikes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("dislikes");
 
                     b.Property<bool>("Likes")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("likes");
 
                     b.Property<int>("QuestionId")
@@ -573,7 +568,7 @@ namespace CodeAnswers.Data.Migrations
                     b.HasOne("CodeAnswers.Models.Users", "User")
                         .WithMany("AnswerRatings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Answer");
@@ -614,7 +609,7 @@ namespace CodeAnswers.Data.Migrations
                     b.HasOne("CodeAnswers.Models.Users", "User")
                         .WithMany("QuestionRatings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Question");

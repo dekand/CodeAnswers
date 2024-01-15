@@ -33,5 +33,9 @@ namespace CodeAnswers.Models
         public List<Answers> Answer { get; set; } = new();
         //один-к-одному (Images-Users)
         public Images? Image {  get; set; }
+        //один-ко-многим (Users-QuestionsRating)
+        public List<QuestionsRating> QuestionRatings { get; set; } = new();
+        //один-ко-многим (Users-AnswersRating)
+        public List<AnswersRating> AnswerRatings { get; set; } = new();
     }
 }

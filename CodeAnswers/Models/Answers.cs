@@ -18,5 +18,7 @@ namespace CodeAnswers.Models
         //один-ко-многим (Questions-Answers)
         public int QuestionId { get; set; }
         public Questions? Question { get; set; }
+        //один-ко-многим (Answers-AnswersRating)
+        public List<AnswersRating> AnswerRatings { get; set; } = new();
     }
 }

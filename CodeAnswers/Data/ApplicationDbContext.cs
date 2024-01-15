@@ -17,6 +17,8 @@ namespace CodeAnswers.Data
         public DbSet<Users> Users { get; set; } = default!;
         public DbSet<Answers> Answers { get; set; } = default!;
         public DbSet<Images> Images { get; set; } = default!;
+        public DbSet<AnswersRating> AnswersRating { get; set; } = default!;
+        public DbSet<QuestionsRating> QuestionsRating { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +28,8 @@ namespace CodeAnswers.Data
             modelBuilder.ApplyConfiguration(new TagsConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
             modelBuilder.ApplyConfiguration(new ImagesConfiguration());
+            modelBuilder.ApplyConfiguration(new AnswersRatingConfiguration());
+            modelBuilder.ApplyConfiguration(new QuestionsRatingConfiguration());
         }
     }
 }
