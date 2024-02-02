@@ -2,25 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
+using CodeAnswers.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using CodeAnswers.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using System.Runtime.Intrinsics.X86;
-using CodeAnswers.Services;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace CodeAnswers.Areas.Identity.Pages.Account
 {
@@ -38,7 +28,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            EmailService emailSender            )
+            EmailService emailSender)
 
         {
             _userManager = userManager;
@@ -141,7 +131,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                 
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
@@ -162,7 +152,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account
             return Page();
         }
 
-private IdentityUser CreateUser()
+        private IdentityUser CreateUser()
         {
             try
             {
