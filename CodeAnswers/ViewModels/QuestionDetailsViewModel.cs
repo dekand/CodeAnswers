@@ -2,7 +2,7 @@
 
 namespace CodeAnswers.ViewModels
 {
-    public class QuestionDetailsData
+    public class QuestionDetailsViewModel
     {
         public Questions Question { get; set; } = null!;
         public List<Answers> Answers { get; set; } = null!;

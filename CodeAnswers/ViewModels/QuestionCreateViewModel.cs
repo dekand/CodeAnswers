@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CodeAnswers.ViewModels
 {
-    public class QuestionCreateData
+    public class QuestionCreateViewModel
     {
         public string QuestionTitle { get; set; }
         public string QuestionDescription { get; set; }
