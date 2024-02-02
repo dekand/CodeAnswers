@@ -37,5 +37,7 @@ namespace CodeAnswers.Models
         public List<QuestionsRating> QuestionRatings { get; set; } = new();
         //один-ко-многим (Users-AnswersRating)
         public List<AnswersRating> AnswerRatings { get; set; } = new();
+        //один-к-одному (Ratings-Users)
+        public Ratings? Rating { get; set; }
     }
 }

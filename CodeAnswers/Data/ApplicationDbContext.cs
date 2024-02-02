@@ -19,6 +19,7 @@ namespace CodeAnswers.Data
         public DbSet<Images> Images { get; set; } = default!;
         public DbSet<AnswersRating> AnswersRating { get; set; } = default!;
         public DbSet<QuestionsRating> QuestionsRating { get; set; } = default!;
+        public DbSet<Ratings> Ratings { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,7 @@ namespace CodeAnswers.Data
             modelBuilder.ApplyConfiguration(new ImagesConfiguration());
             modelBuilder.ApplyConfiguration(new AnswersRatingConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionsRatingConfiguration());
+            modelBuilder.ApplyConfiguration(new RatingsConfiguration());
         }
     }
 }

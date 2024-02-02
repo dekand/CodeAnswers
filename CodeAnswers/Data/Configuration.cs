@@ -1,8 +1,6 @@
 ﻿using CodeAnswers.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Migrations;
-using System.Reflection.Emit;
 
 namespace CodeAnswers.Data
 {
@@ -62,7 +60,7 @@ namespace CodeAnswers.Data
             builder
                .HasOne(c => c.User)
                .WithMany(s => s.Question)
-               .HasForeignKey(u=>u.AuthorId);
+               .HasForeignKey(u => u.AuthorId);
             //один-ко-многим (Questions-Answers)
             builder
                 .HasMany(c => c.Answer)
@@ -102,7 +100,6 @@ namespace CodeAnswers.Data
             builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(p => p.RegistrationDate).HasColumnName("registration_date").IsRequired()
                 .HasDefaultValueSql("getdate()");
-            //СДЕЛАТЬ СТОЛБЕЦ ВЫЧИСЛЯЕМЫМ = Questions.rating+Answers.rating
             builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
                 .HasComputedColumnSql("[dbo].[Fun_ReputationCalc]([id])");
             builder.Property(p => p.Location).HasColumnName("location");
@@ -135,6 +132,11 @@ namespace CodeAnswers.Data
                 .WithOne(c => c.User)
                 .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+            //один-к-одному (Ratings-Users)
+            builder
+                .HasOne(c => c.Rating)
+                .WithOne(s => s.User)
+                .HasForeignKey<Ratings>(u => u.UserId);
         }
     }
     public class ImagesConfiguration : IEntityTypeConfiguration<Images>
@@ -153,12 +155,11 @@ namespace CodeAnswers.Data
                 .WithOne(s => s.Image)
                 .HasForeignKey<Images>(u => u.UserId);
         }
-    }   
-    public class AnswersRatingConfiguration:IEntityTypeConfiguration<AnswersRating>
+    }
+    public class AnswersRatingConfiguration : IEntityTypeConfiguration<AnswersRating>
     {
         public void Configure(EntityTypeBuilder<AnswersRating> builder)
         {
-            builder.Property(p => p.Id).HasColumnName("id");
             builder.Property(p => p.Likes).HasColumnName("likes")
                 .HasDefaultValue(false);
             builder.Property(p => p.Dislikes).HasColumnName("dislikes")
@@ -174,28 +175,47 @@ namespace CodeAnswers.Data
             builder.HasOne(c => c.Answer)
                 .WithMany(c => c.AnswerRatings)
                 .HasForeignKey(k => k.AnswerId);
+            builder.HasKey(b => new { b.AnswerId, b.UserId });
+
         }
-    }  
-    public class QuestionsRatingConfiguration:IEntityTypeConfiguration<QuestionsRating>
+    }
+    public class QuestionsRatingConfiguration : IEntityTypeConfiguration<QuestionsRating>
     {
         public void Configure(EntityTypeBuilder<QuestionsRating> builder)
         {
-            builder.Property(p => p.Id).HasColumnName("id");
             builder.Property(p => p.Likes).HasColumnName("likes")
                 .HasDefaultValue(false);
             builder.Property(p => p.Dislikes).HasColumnName("dislikes")
                 .HasDefaultValue(false);
             builder.Property(p => p.QuestionId).HasColumnName("question_id").IsRequired();
             builder.Property(p => p.UserId).HasColumnName("user_id").IsRequired();
-
             //один-ко-многим (Users-QuestionsRating)
             builder.HasOne(c => c.User)
                 .WithMany(c => c.QuestionRatings)
                 .HasForeignKey(k => k.UserId);
-            //один-ко-многим (Answers-QuestionsRating)
+            //один-ко-многим (Questions-QuestionsRating)
             builder.HasOne(c => c.Question)
                 .WithMany(c => c.QuestionRatings)
                 .HasForeignKey(k => k.QuestionId);
+            builder.HasKey(b => new { b.QuestionId, b.UserId });
+        }
+    }
+    public class RatingsConfiguration : IEntityTypeConfiguration<Ratings>
+    {
+        public void Configure(EntityTypeBuilder<Ratings> builder)
+        {
+            builder.Property(p => p.QuestionsRating).HasColumnName("questions_rating")
+                .HasComputedColumnSql("[dbo].[Fun_QuestionsRatingCalc]([user_id])");
+            builder.Property(p => p.AnswersRating).HasColumnName("answers_rating")
+                .HasComputedColumnSql("[dbo].[Fun_AnswersRatingCalc]([user_id])");
+            builder.Property(p => p.Total).HasColumnName("total")
+                .HasComputedColumnSql("[dbo].[Fun_TotalRatingCalc]([user_id])");
+            builder.Property(p => p.UserId).HasColumnName("user_id").IsRequired();
+            builder.HasKey(k => k.UserId);
+            //один к одному (Ratings-Users)
+            builder.HasOne(c => c.User)
+                .WithOne(c => c.Rating)
+                .HasForeignKey<Ratings>(k => k.UserId);
         }
     }
 }
