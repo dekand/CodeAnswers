@@ -4,6 +4,7 @@ using CodeAnswers.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using CodeAnswers.ViewModels;
 
 namespace CodeAnswers.Controllers
 {
@@ -41,19 +42,6 @@ namespace CodeAnswers.Controllers
                 .OrderByDescending(o=>o.Rating)
                 .ThenByDescending(o=>o.PublicationDate)
                 .ToListAsync());
-        }
-
-        [HttpGet("{id}/Tags", Name = nameof(GetTag))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public ActionResult<IEnumerable<Tags>> GetTag(int id)
-        {
-            var result = _context.Questions.FirstOrDefault(a => a.Id == id);
-
-            if (result == null)
-                return BadRequest($"Теги с заданным Id: {id} не существует");
-
-            return result.Tag.ToArray();
         }
 
         public IActionResult Privacy()

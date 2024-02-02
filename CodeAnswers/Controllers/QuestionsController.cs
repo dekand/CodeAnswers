@@ -33,12 +33,13 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var viewModel = new QuestionDetailsData();
+            var viewModel = new QuestionDetailsViewModel();
             var question = await _context.Questions
                 .Include(q => q.User)
                 .ThenInclude(c => c.Image)
                 .Include(a => a.Answer)
                 .Include(t => t.Tag)
+                .Include(u=>u.QuestionRatings)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (question == null)
@@ -51,6 +52,7 @@ namespace CodeAnswers.Controllers
             .Include(q => q.User)
             .ThenInclude(c => c.Image)
             .Include(a => a.Question)
+            .Include(u=>u.AnswerRatings)
             .Where(a => a.QuestionId == id)
             .OrderByDescending(c => c.Rating)
             .ThenBy(c => c.PublicationDate)
@@ -87,7 +89,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("QuestionTitle,QuestionDescription,TagsId")] QuestionCreateData model)
+        public async Task<IActionResult> Create([Bind("QuestionTitle,QuestionDescription,TagsId")] QuestionCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -153,7 +155,7 @@ namespace CodeAnswers.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionsExists(questions.Id))
+                    if (!await QuestionsExists(questions.Id))
                     {
                         return NotFound();
                     }
@@ -202,9 +204,9 @@ namespace CodeAnswers.Controllers
             return Redirect("/Home/Index");
         }
 
-        private bool QuestionsExists(int id)
+        private async Task<bool> QuestionsExists(int id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return await _context.Questions.AnyAsync(e => e.Id == id);
         }
     }
 }

@@ -124,7 +124,7 @@ namespace CodeAnswers.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.Id))
+                    if (!await UsersExists(users.Id))
                     {
                         return NotFound();
                     }
@@ -171,9 +171,9 @@ namespace CodeAnswers.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsersExists(int id)
+        private async Task<bool> UsersExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return await _context.Users.AnyAsync(e => e.Id == id);
         }
     }
 }

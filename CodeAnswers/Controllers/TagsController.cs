@@ -49,7 +49,7 @@ namespace CodeAnswers.Controllers
             {
                 return NotFound();
             }
-            var viewModel = new TagDetailsData();
+            var viewModel = new TagDetailsViewModel();
 
             var tag = await _context.Tags
                 .Include(q => q.Question)
@@ -132,7 +132,7 @@ namespace CodeAnswers.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TagsExists(tags.Id))
+                    if (!await TagsExists(tags.Id))
                     {
                         return NotFound();
                     }
@@ -179,9 +179,9 @@ namespace CodeAnswers.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TagsExists(int id)
+        private async Task<bool> TagsExists(int id)
         {
-            return _context.Tags.Any(e => e.Id == id);
+            return await _context.Tags.AnyAsync(e => e.Id == id);
         }
     }
 }

@@ -22,10 +22,10 @@ namespace CodeAnswers.Controllers
         // GET: Answers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Answers
+            return View(await _context.Answers
                 .Include(a => a.Question)
-                .Include(a => a.User);
-            return View(await applicationDbContext.ToListAsync());
+                .Include(a => a.User)
+                .ToListAsync());
         }
 
         // GET: Answers/Details/5
@@ -113,7 +113,7 @@ namespace CodeAnswers.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnswersExists(answers.Id))
+                    if (!await AnswersExists(answers.Id))
                     {
                         return NotFound();
                     }
@@ -164,9 +164,9 @@ namespace CodeAnswers.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AnswersExists(int id)
+        private async Task<bool> AnswersExists(int id)
         {
-            return _context.Answers.Any(e => e.Id == id);
+            return await _context.Answers.AnyAsync(e => e.Id == id);
         }
     }
 }
