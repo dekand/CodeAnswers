@@ -82,7 +82,11 @@ namespace CodeAnswers.Controllers
                 return NotFound();
             }
 
-            var answers = await _context.Answers.FindAsync(id);
+            var answers = await _context.Answers
+                .Include(c=>c.User)
+                .Include(c=>c.Question)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (answers == null)
             {
                 return NotFound();

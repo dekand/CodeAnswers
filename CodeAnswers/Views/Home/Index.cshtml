@@ -18,53 +18,22 @@
     <div class="top-questions">
         @foreach (var item in Model)
         {
-            @if (item.Answered)
-            {
-                <div class="answered-bg-grad">
-                    <div class="row">
-                        <div class="col-auto">
-                            <p>@item.Rating Голосов</p>
-                            <p>@item.Answer.Count Ответов</p>
-                        </div>
-                        <div class="col qstns-list">
-                            <div><a asp-controller="Questions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></div>
-                            <div>
-                                @foreach (var c in item.Tag)
-                                {
-                                    <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
-                                        @c.Name
-                                    </a>
-                                }
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <img class="q-img" src="@item.User.Image.ImagePath" alt="" />
-                            <a asp-controller="Users" asp-action="Details" asp-route-id="@item.AuthorId">
-                                @Html.DisplayFor(modelItem => item.User.Name)
-                            </a>
-                            <span>спросил @item.PublicationDate</span>
-                        </div>
+            <div class="@if (item.Answered){@Html.Raw("answered-bg-grad")}">
+                <div class="row">
+                    <div class="col-auto">
+                        <p>@item.Rating Голосов</p>
+                        <p>@item.Answer.Count Ответов</p>
                     </div>
-                </div>
-            }
-            else
-            {
-                <div>
-                    <div class="row">
-                        <div class="col-auto">
-                            <p>@item.Rating Голосов</p>
-                            <p>@item.Answer.Count Ответов</p>
+                    <div class="col qstns-list">
+                        <div><a asp-controller="Questions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></div>
+                        <div>
+                            @foreach (var c in item.Tag)
+                            {
+                                <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
+                                    @c.Name
+                                </a>
+                            }
                         </div>
-                        <div class="col qstns-list">
-                            <div><a asp-controller="Questions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></div>
-                            <div>
-                                @foreach (var c in item.Tag)
-                                {
-                                    <a asp-controller="Tags" asp-action="Details" asp-route-id="@c.Id">
-                                        @c.Name
-                                    </a>
-                                }
-                            </div>
                     </div>
                     <div class="col-auto">
                         <img class="q-img" src="@item.User.Image.ImagePath" alt="" />
@@ -75,7 +44,6 @@
                     </div>
                 </div>
             </div>
-            }
         }
     </div>
 }

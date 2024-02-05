@@ -1,11 +1,63 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using CodeAnswers.ViewModels
-@model QuestionDetailsData
+@model QuestionDetailsViewModel
 @inject SignInManager<IdentityUser> SignInManager
 
 @{
     ViewData["Title"] = Model.Question.Title;
 }
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#like-question").on("click", function () {
+                var formData = new FormData();
+                formData.append("userName", $("#user-name").val());
+                formData.append("questionId", $("#question-id").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Like", "QuestionsRating")',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                    success: false,
+                    error: errorCallback
+                });
+            });
+            function errorCallback() {
+                bootbox.alert("Не удалось выполнить операцию Like.");
+            }
+        });
+        $(document).ready(function () {
+            $("#dislike-question").on("click", function () {
+                //СДЕЛАТЬ ПРИ НАЖАТИИ СМЕНУ ФОНОВОГО ИЗОБРАЖЕНИЯ
+
+                var formData = new FormData();
+                formData.append("userName", $("#user-name").val());
+                formData.append("questionId", $("#question-id").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Dislike", "QuestionsRating")',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                    success: false,
+                    error: errorCallback
+                });
+            });
+            function errorCallback() {
+                bootbox.alert("Не удалось выполнить операцию Dislike.");
+            }
+        });
+        $('.like-img-selected').on({
+            click: function () {
+                $(this).addClass('like-img').removeClass('like-img-selected') // changes background on click
+            }
+        });
+    </script>
+}
+
 <div class="row">
     <div class="col">
         <h1>@Html.DisplayFor(model => model.Question.Title)</h1>
@@ -15,9 +67,31 @@
         <div class="col-auto">
             <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@Model.Question.Id">Изменить</a>
             <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@Model.Question.Id">Удалить</a>
-    </div>}
+        </div>
+    }
 </div>
 <div class="row q-date">
+    <div class="col-auto row">
+        @if (Model.Question.Answered)
+        {
+            <div class="answ-checked col"></div>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.Identity!.Name != Model.Question.User.Name)
+        {   
+            <div class="col">
+            <form class="q-rating-form">
+                <input type="hidden" id="question-id" asp-for="@Model.Question.Id" value="@Model.Question.Id" />
+                <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" value="@User.Identity!.Name" />
+                <div class="col">
+                    <button id="like-question" type="button" class="btn btn-light like-rating-btn like-img col"></button>
+                </div>
+                <div class="col">
+                    <button id="dislike-question" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
+                </div>
+            </form>
+            </div>
+        }
+    </div>
     <div class="col-auto">
         <p><span>Рейтинг:</span> @Model.Question.Rating</p>
     </div>
@@ -39,7 +113,10 @@
     <div>@Html.Raw(Model.Question.Description)</div>
     <div class="row qstns-list after-descr">
         <div class="col-auto">
-            <a asp-action="Edit" asp-route-id="@Model.Question.Id">Изменить</a>
+            @if (SignInManager.IsSignedIn(User) && User.Identity!.Name == Model.Question.User.Name)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Question.Id">Изменить</a>
+            }
         </div>
         <div class="col">
             @foreach (var c in Model.Question.Tag)
@@ -71,23 +148,31 @@
                 <div class="show-rating col">
                     @answ.Rating
                 </div>
-                <div class="w-100"></div>
-                <div class="col"><button type="button" class="btn btn-light like-rating-btn col"></button></div>
-                <div class="col">
-                    <button type="button" class="btn btn-light dislike-rating-btn col"></button>
-                </div>
+                @if (SignInManager.IsSignedIn(User) && User.Identity!.Name != answ.User.Name)
+                {
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col"></button>
+                    </div>
+                    <div class="col">
+                        <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
+                    </div>
+                }
             </div>
             <div class="col">
                 <div>@Html.Raw(answ.Description)</div>
-                <div class="row qstns-list after-descr">
+                <div class="row qstns-list @if(answ.Accepted){@Html.Raw("answered-bg-grad-to-top")} after-descr">
                     <div class="col-auto">
-                        <a asp-controller="Answers" asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+                        @if (SignInManager.IsSignedIn(User) && User.Identity!.Name == answ.User.Name)
+                        {
+                            <a asp-controller="Answers" asp-action="Edit" asp-route-id="@answ?.Id">Изменить</a>
+                        }
                     </div>
                     <div class="col">
                         <p>Рейтинг: <span>@answ.Rating</span></p>
                     </div>
                     <div class="col-auto q-author">
-                         <img src="@answ.User.Image.ImagePath" alt="" />
+                        <img src="@answ.User.Image.ImagePath" alt="" />
                         <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@answ.User.Name</a>
                         <span>ответил @answ.PublicationDate</span>
                     </div>
@@ -126,4 +211,3 @@
         </div>
     }
 }else{<p>Автор вопроса пометил один из ответов как "решение". Более нет возможности написать свой ответ.</p>}
-

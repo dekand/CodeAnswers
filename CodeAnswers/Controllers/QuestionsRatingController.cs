@@ -4,7 +4,6 @@ using CodeAnswers.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Security.Principal;
 
 namespace CodeAnswers.Controllers
 {
@@ -34,17 +33,34 @@ namespace CodeAnswers.Controllers
                 Likes = true
             };
             var model = new JsonResponseViewModel();
+            var question = await _context.Questions.FirstOrDefaultAsync(c => c.Id == QuestionId);
             if (qLike != null)
             {
-                if (await _context.QuestionsRating.ContainsAsync(qLike))
+                if (await _context.QuestionsRating.ContainsAsync(qLike) && question != null)
                 {
                     var lEntity = await _context.QuestionsRating.FirstOrDefaultAsync(c => c == qLike);
-                    lEntity.Likes = !lEntity.Likes;
-                    lEntity.Dislikes = false;
-                    if (lEntity.Dislikes == lEntity.Likes) { _context.QuestionsRating.Remove(lEntity); }
+                    if (lEntity.Dislikes != lEntity.Likes && lEntity.Dislikes == true)
+                    {
+                        lEntity.Likes = true;
+                        lEntity.Dislikes = false;
+                        question.Rating += 2;
+                    }
+                    else
+                    {
+                        if (lEntity.Likes == true)
+                        {
+                            lEntity.Likes = false;
+                            question.Rating -= 1;
+                        }
+                        else
+                        {
+                            _context.QuestionsRating.Remove(lEntity);
+                        }
+                    }
                 }
                 else
                 {
+                    question.Rating += 1;
                     _context.Add(qLike);
                 }
                 await _context.SaveChangesAsync();
@@ -72,17 +88,34 @@ namespace CodeAnswers.Controllers
                 Dislikes = true
             };
             var model = new JsonResponseViewModel();
+            var question = await _context.Questions.FirstOrDefaultAsync(c => c.Id == QuestionId);
             if (qDislike != null)
             {
-                if (await _context.QuestionsRating.ContainsAsync(qDislike))
+                if (await _context.QuestionsRating.ContainsAsync(qDislike) && question != null)
                 {
                     var dEntity = await _context.QuestionsRating.FirstOrDefaultAsync(c => c == qDislike);
-                    dEntity.Dislikes = !dEntity.Dislikes;
-                    dEntity.Likes = false;
-                    if(dEntity.Dislikes== dEntity.Likes) { _context.QuestionsRating.Remove(dEntity); }
+                    if (dEntity.Dislikes != dEntity.Likes && dEntity.Likes == true)
+                    {
+                        dEntity.Likes = false;
+                        dEntity.Dislikes = true;
+                        question.Rating -= 2;
+                    }
+                    else
+                    {
+                        if (dEntity.Dislikes == true)
+                        {
+                            dEntity.Dislikes = false;
+                            question.Rating += 1;
+                        }
+                        else
+                        {
+                            _context.QuestionsRating.Remove(dEntity);
+                        }
+                    }
                 }
                 else
                 {
+                    question.Rating -= 1;
                     _context.Add(qDislike);
                 }
                 await _context.SaveChangesAsync();

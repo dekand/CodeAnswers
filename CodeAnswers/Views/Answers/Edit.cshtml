@@ -1,12 +1,19 @@
 ﻿@model CodeAnswers.Models.Answers
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование ответа";
 }
 
-<h1>Edit</h1>
+<h1>Редактировать ответ на вопрос</h1>
+<div>
+    <div>
+        <h3>@Html.Raw(Model.Question.Title)</h3>
+    </div>
+    <div>
+        @Html.Raw(Model.Question.Description)
+    </div>
+</div>
 
-<h4>Answers</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
