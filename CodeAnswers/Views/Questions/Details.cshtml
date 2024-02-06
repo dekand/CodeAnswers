@@ -15,20 +15,15 @@
                 formData.append("questionId", $("#question-id").val());
                 $.ajax({
                     type: 'POST',
-                    url: '@Url.Action("Like", "QuestionsRating")',
+                    url: '@Url.Action("QuestionLike", "Rating")',
                     contentType: false,
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: false,
+                    success: console.log("successfully!"),
                     error: errorCallback
                 });
             });
-            function errorCallback() {
-                bootbox.alert("Не удалось выполнить операцию Like.");
-            }
-        });
-        $(document).ready(function () {
             $("#dislike-question").on("click", function () {
                 //СДЕЛАТЬ ПРИ НАЖАТИИ СМЕНУ ФОНОВОГО ИЗОБРАЖЕНИЯ
 
@@ -37,24 +32,64 @@
                 formData.append("questionId", $("#question-id").val());
                 $.ajax({
                     type: 'POST',
-                    url: '@Url.Action("Dislike", "QuestionsRating")',
+                    url: '@Url.Action("QuestionDislike", "Rating")',
                     contentType: false,
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: false,
+                    success: console.log("successfully!"),
                     error: errorCallback
                 });
             });
             function errorCallback() {
-                bootbox.alert("Не удалось выполнить операцию Dislike.");
+                bootbox.alert("Не удалось выполнить операцию Like/Dislike.");
+                console.log("ошибка при отправлении запроса");
             }
         });
-        $('.like-img-selected').on({
-            click: function () {
-                $(this).addClass('like-img').removeClass('like-img-selected') // changes background on click
+        $(document).ready(function () {
+            $("#like-answer").on("click", function () {
+                var formData = new FormData();
+                formData.append("userName", $("#user-name").val());
+                formData.append("answerId", $("#answer-id").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AnswerLike", "Rating")',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                    success: console.log("successfully!"),
+                    error: errorCallback
+                });
+            });
+            $("#dislike-answer").on("click", function () {
+                //СДЕЛАТЬ ПРИ НАЖАТИИ СМЕНУ ФОНОВОГО ИЗОБРАЖЕНИЯ
+
+                var formData = new FormData();
+                formData.append("userName", $("#user-name").val());
+                formData.append("answerId", $("#answer-id").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AnswerDislike", "Rating")',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                    success: console.log("successfully!"),
+                    error: errorCallback
+                });
+            });
+            function errorCallback() {
+                bootbox.alert("Не удалось выполнить операцию Like/Dislike.");
+                console.log("ошибка при отправлении запроса");
             }
         });
+        
+        // $('.like-img-selected').on({
+        //     click: function () {
+        //         $(this).addClass('like-img').removeClass('like-img-selected') // changes background on click
+        //     }
+        // });
     </script>
 }
 
@@ -151,12 +186,17 @@
                 @if (SignInManager.IsSignedIn(User) && User.Identity!.Name != answ.User.Name)
                 {
                     <div class="w-100"></div>
-                    <div class="col">
-                        <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col"></button>
-                    </div>
-                    <div class="col">
-                        <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
-                    </div>
+                        <form class="a-rating-form">
+                            <input type="hidden" id="answer-id" asp-for="@answ.Id"  />
+                            <input type="hidden" id="user-name" asp-for="@User.Identity!.Name"  />
+                            <div class="col">
+                                <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col"></button>
+                            </div>
+                            <div class="col">
+                                <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
+                            </div>
+                        </form>
+                   
                 }
             </div>
             <div class="col">
