@@ -1,6 +1,7 @@
 ﻿using CodeAnswers.Data;
 using CodeAnswers.Models;
 using CodeAnswers.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -21,7 +22,7 @@ namespace CodeAnswers.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<JsonResult> QuestionLike(IFormCollection formCollection)
         {
             var UserId = _context.Users.FirstOrDefault(c => c.Name == formCollection["userName"].ToString()).Id;
@@ -77,7 +78,7 @@ namespace CodeAnswers.Controllers
             return Json(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<JsonResult> QuestionDislike(IFormCollection formCollection)
         {
             var id = _context.Users.FirstOrDefault(c => c.Name == formCollection["userName"].ToString()).Id;
@@ -133,7 +134,7 @@ namespace CodeAnswers.Controllers
             return Json(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<JsonResult> AnswerLike(IFormCollection formCollection)
         {
             var UserId = _context.Users.FirstOrDefault(c => c.Name == formCollection["userName"].ToString()).Id;
@@ -189,7 +190,7 @@ namespace CodeAnswers.Controllers
             return Json(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]                               
         public async Task<JsonResult> AnswerDislike(IFormCollection formCollection)
         {
             var id = _context.Users.FirstOrDefault(c => c.Name == formCollection["userName"].ToString()).Id;

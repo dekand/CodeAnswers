@@ -235,10 +235,6 @@ h1{font-size:1.7rem;}
     background: url("/img/sys/like.svg") no-repeat;
     background-size: 100%;
 }
-.like-img-selected {
-    background: url("/img/sys/like-selected.svg") no-repeat;
-    background-size: 100%;
-}
 .dislike-rating-btn {
     width: 25px;
     height: 25px;
@@ -266,3 +262,9 @@ h1{font-size:1.7rem;}
 }
 .q-rating-form{display:flex;}
 .q-rating-form > div{margin-right:10px}
+.finger-active 
+{
+    filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(200deg) brightness(119%) contrast(119%);
+}
+.a-rating-form{display:flex;}
+.a-rating-form > div{margin-right:10px;}

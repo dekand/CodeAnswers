@@ -32,14 +32,14 @@ namespace CodeAnswers.Controllers
             {
                 return NotFound();
             }
-
+  
             var viewModel = new QuestionDetailsViewModel();
             var question = await _context.Questions
                 .Include(q => q.User)
                 .ThenInclude(c => c.Image)
                 .Include(a => a.Answer)
                 .Include(t => t.Tag)
-                .Include(u=>u.QuestionRatings)
+                .Include(u => u.QuestionRatings)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (question == null)
@@ -52,12 +52,19 @@ namespace CodeAnswers.Controllers
             .Include(q => q.User)
             .ThenInclude(c => c.Image)
             .Include(a => a.Question)
-            .Include(u=>u.AnswerRatings)
+            .Include(u => u.AnswerRatings)
             .Where(a => a.QuestionId == id)
             .OrderByDescending(c => c.Rating)
             .ThenBy(c => c.PublicationDate)
             .ToListAsync();
 
+            var userId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
+            viewModel.QuestionsRatings = await _context.QuestionsRating
+                .Where(c => c.QuestionId == id && c.UserId == userId)
+                .ToListAsync();
+            //ЗДЕСЬ НАДО ОТФИЛЬТРОВАТЬ НОРМАЛЬНО
+            var allAnsId = await _context.Answers.Where(c => c.QuestionId == id).Select(p => p.Id).ToListAsync();
+            viewModel.AnswersRatings =await _context.AnswersRating.Where(c=> allAnsId.Contains(c.AnswerId)).ToListAsync();
             return View(viewModel);
         }
         //POST Details
@@ -149,7 +156,7 @@ namespace CodeAnswers.Controllers
             {
                 try
                 {
-                    questions.ModifiedDate=DateTime.Now;
+                    questions.ModifiedDate = DateTime.Now;
                     _context.Update(questions);
                     await _context.SaveChangesAsync();
                 }

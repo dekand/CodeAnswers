@@ -20,13 +20,13 @@
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: console.log("successfully!"),
-                    error: errorCallback
+                    success: false,
+                    error: function () { bootbox.alert("Не удалось выполнить операцию Like/Dislike."); }
                 });
             });
+        });
+        $(document).ready(function () {
             $("#dislike-question").on("click", function () {
-                //СДЕЛАТЬ ПРИ НАЖАТИИ СМЕНУ ФОНОВОГО ИЗОБРАЖЕНИЯ
-
                 var formData = new FormData();
                 formData.append("userName", $("#user-name").val());
                 formData.append("questionId", $("#question-id").val());
@@ -37,17 +37,14 @@
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: console.log("successfully!"),
-                    error: errorCallback
+                    success: false,
+                    error: function () { bootbox.alert("Не удалось выполнить операцию Like/Dislike."); }
                 });
             });
-            function errorCallback() {
-                bootbox.alert("Не удалось выполнить операцию Like/Dislike.");
-                console.log("ошибка при отправлении запроса");
-            }
         });
+
         $(document).ready(function () {
-            $("#like-answer").on("click", function () {
+            $("#like-answer").on('click', function () {
                 var formData = new FormData();
                 formData.append("userName", $("#user-name").val());
                 formData.append("answerId", $("#answer-id").val());
@@ -58,13 +55,13 @@
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: console.log("successfully!"),
-                    error: errorCallback
+                    success: false,
+                    error: function () { bootbox.alert("Не удалось выполнить операцию Like/Dislike."); }
                 });
             });
+        });
+        $(document).ready(function () {
             $("#dislike-answer").on("click", function () {
-                //СДЕЛАТЬ ПРИ НАЖАТИИ СМЕНУ ФОНОВОГО ИЗОБРАЖЕНИЯ
-
                 var formData = new FormData();
                 formData.append("userName", $("#user-name").val());
                 formData.append("answerId", $("#answer-id").val());
@@ -75,21 +72,11 @@
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: console.log("successfully!"),
-                    error: errorCallback
+                    success: false,
+                    error: function () { bootbox.alert("Не удалось выполнить операцию Like/Dislike."); }
                 });
             });
-            function errorCallback() {
-                bootbox.alert("Не удалось выполнить операцию Like/Dislike.");
-                console.log("ошибка при отправлении запроса");
-            }
         });
-        
-        // $('.like-img-selected').on({
-        //     click: function () {
-        //         $(this).addClass('like-img').removeClass('like-img-selected') // changes background on click
-        //     }
-        // });
     </script>
 }
 
@@ -118,10 +105,10 @@
                 <input type="hidden" id="question-id" asp-for="@Model.Question.Id" value="@Model.Question.Id" />
                 <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" value="@User.Identity!.Name" />
                 <div class="col">
-                    <button id="like-question" type="button" class="btn btn-light like-rating-btn like-img col"></button>
+                    <button id="like-question" type="button" class="btn btn-light like-rating-btn like-img col @if(Model.QuestionsRatings!=null && Model.QuestionsRatings.First().Likes==true){@Html.Raw("finger-active")} "></button>
                 </div>
                 <div class="col">
-                    <button id="dislike-question" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
+                    <button id="dislike-question" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(Model.QuestionsRatings!=null && Model.QuestionsRatings.First().Dislikes==true){@Html.Raw("finger-active")} "></button>
                 </div>
             </form>
             </div>
@@ -186,17 +173,18 @@
                 @if (SignInManager.IsSignedIn(User) && User.Identity!.Name != answ.User.Name)
                 {
                     <div class="w-100"></div>
+                    <div class="col">
                         <form class="a-rating-form">
-                            <input type="hidden" id="answer-id" asp-for="@answ.Id"  />
-                            <input type="hidden" id="user-name" asp-for="@User.Identity!.Name"  />
+                            <input type="hidden" id="answer-id" asp-for="@answ.Id" />
+                            <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" />
                             <div class="col">
-                                <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col"></button>
+                                <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col @if(Model.AnswersRatings!=null && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Likes==true){@Html.Raw("finger-active")}"></button>
                             </div>
                             <div class="col">
-                                <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col"></button>
+                                <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(Model.AnswersRatings!=null && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Dislikes==true){@Html.Raw("finger-active")}"></button>
                             </div>
                         </form>
-                   
+                    </div>
                 }
             </div>
             <div class="col">
