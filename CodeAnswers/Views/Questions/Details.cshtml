@@ -199,6 +199,12 @@
                     <div class="col">
                         <p>Рейтинг: <span>@answ.Rating</span></p>
                     </div>
+                    @if (!Model.Question.Answered && SignInManager.IsSignedIn(User) && User.Identity!.Name == Model.Question.User.Name)
+                    {
+                        <div class="col-auto">
+                            <a asp-action="Details" asp-route-aid="@answ?.Id" asp-route-id="@Model.Question.Id">Этот ответ является решением!</a>
+                        </div>
+                    }
                     <div class="col-auto q-author">
                         <img src="@answ.User.Image.ImagePath" alt="" />
                         <a asp-controller="Users" asp-action="Details" asp-route-id="@answ.AuthorId">@answ.User.Name</a>

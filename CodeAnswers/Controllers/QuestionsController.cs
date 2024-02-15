@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace CodeAnswers.Controllers
 {
@@ -26,13 +27,20 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Questions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? aid)
         {
             if (id == null)
             {
                 return NotFound();
             }
-  
+            if (aid != null)
+            {
+                var ans = await _context.Answers.FirstOrDefaultAsync(c => c.Id == aid);
+                ans.Accepted = true;
+                var quest = await _context.Questions.FirstOrDefaultAsync(c => c.Id == id);
+                quest.Answered = true;
+                await _context.SaveChangesAsync();
+            }
             var viewModel = new QuestionDetailsViewModel();
             var question = await _context.Questions
                 .Include(q => q.User)
@@ -62,9 +70,8 @@ namespace CodeAnswers.Controllers
             viewModel.QuestionsRatings = await _context.QuestionsRating
                 .Where(c => c.QuestionId == id && c.UserId == userId)
                 .ToListAsync();
-            //ЗДЕСЬ НАДО ОТФИЛЬТРОВАТЬ НОРМАЛЬНО
             var allAnsId = await _context.Answers.Where(c => c.QuestionId == id).Select(p => p.Id).ToListAsync();
-            viewModel.AnswersRatings =await _context.AnswersRating.Where(c=> allAnsId.Contains(c.AnswerId)).ToListAsync();
+            viewModel.AnswersRatings = await _context.AnswersRating.Where(c => allAnsId.Contains(c.AnswerId)).ToListAsync();
             return View(viewModel);
         }
         //POST Details
@@ -82,6 +89,7 @@ namespace CodeAnswers.Controllers
             }
             return RedirectToAction(nameof(Details));
         }
+
         // GET: Questions/Create
         [Authorize]
         public async Task<IActionResult> Create(int id)
