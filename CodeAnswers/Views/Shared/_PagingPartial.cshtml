@@ -1,0 +1,111 @@
+﻿<div class="row">
+<div class="paging col">
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+           class="btn btn-outline-dark btn-sm">
+            Назад
+        </a>
+    }
+    @if (Model.PageViewModel.TotalPages > 5)
+    {
+        @if (Model.PageViewModel.PageNumber < 5)
+        {
+            @for (int i = 1; i <= 5; i++)
+            {
+                <a asp-route-page="@i"
+                asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageNumber==@i){@Html.Raw("active");}">
+                    @i
+                </a>
+            }
+            <span>...</span>
+            <a asp-route-page="@Model.PageViewModel.TotalPages"
+            asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+            class="btn btn-outline-dark btn-sm">
+                @(Model.PageViewModel.TotalPages)
+            </a>
+        }
+        else
+        {
+            @if (Model.PageViewModel.PageNumber > Model.PageViewModel.TotalPages - 4)
+            {
+                <a asp-route-page="1"
+                asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                class="btn btn-outline-dark btn-sm">
+                    1
+                </a>
+                <span>...</span>
+                @for (int i = Model.PageViewModel.TotalPages - 4; i <= Model.PageViewModel.TotalPages; i++)
+                {
+                    <a asp-route-page="@i"
+                    asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                    class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageNumber==@i){@Html.Raw("active");}">
+                        @i
+                    </a>
+                }
+            }
+            else
+            {
+                <a asp-route-page="1"
+                   asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                   class="btn btn-outline-dark btn-sm">
+                    1
+                </a>
+                <span>...</span>
+                @for (int i = Model.PageViewModel.PageNumber - 2; i <= Model.PageViewModel.PageNumber+2; i++)
+                {
+                    <a asp-route-page="@i"
+                       asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                       class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageNumber==@i){@Html.Raw("active");}">
+                        @i
+                    </a>
+                }
+                <span>...</span>
+                <a asp-route-page="@Model.PageViewModel.TotalPages"
+                   asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+                   class="btn btn-outline-dark btn-sm">
+                    @(Model.PageViewModel.TotalPages)
+                </a>
+            }
+
+        }
+
+    }
+    else
+        if (Model.PageViewModel.TotalPages>1)
+    {
+        for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
+        {
+            <a asp-route-page="@i"
+               asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+               class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageNumber==@i){@Html.Raw("active");}">
+                @i
+            </a>
+        }
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+           asp-route-pageSize="@(Model.PageViewModel.PageSize)"
+           class="btn btn-outline-dark btn-sm">
+            Вперед
+        </a>
+    }
+    </div>
+    <div class="col-auto">
+        <a asp-route-pageSize="16"
+           class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageSize==16){@Html.Raw("active");}">
+            16
+        </a>
+        <a asp-route-pageSize="24"
+           class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageSize==24){@Html.Raw("active");}">
+            24
+        </a>
+        <a asp-route-pageSize="48"
+           class="btn btn-outline-dark btn-sm @if(Model.PageViewModel.PageSize==48){@Html.Raw("active");}">
+            48
+        </a>
+    </div>
+</div>

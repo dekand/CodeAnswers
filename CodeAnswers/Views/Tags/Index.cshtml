@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CodeAnswers.Models.Tags>
+﻿@model CodeAnswers.ViewModels.TagsIndexViewModel
 
 @{
     ViewData["Title"] = "Теги - CodeAnswers";
@@ -10,10 +10,10 @@
         <input class="form-control form-control-sm" type="text" name="SearchString" placeholder="Найти тег по названию.." />
         <input class="btn btn-primary btn-sm"  type="submit" value="Найти" />
 </form>
-@if (Model.Any())
+@if (Model.Tags.Any())
 {
     <div class="tagsBlock row row-cols-4">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Tags)
         {
             <div class="col">
                 <div>
@@ -32,6 +32,7 @@
             </div>
         }
     </div>
+    <partial name="_PagingPartial" />
 }
 else
 {

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CodeAnswers.Data;
+﻿using CodeAnswers.Data;
 using CodeAnswers.Models;
+using CodeAnswers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using System.Drawing;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnswers.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,25 +18,33 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int page = 1, int pageSize = 0)
         {
             if (_context.Users == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Users' is null.");
             }
             var users = from m in _context.Users
-                       select m;
+                        select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 users = users.Where(s => s.Name!.Contains(searchString));
             }
 
-            return View(await users
-            .Include(c => c.Image)
-            .OrderByDescending(o=>o.Reputation)
-            .ThenBy(o=>o.Name)
-            .ToListAsync());
+            var viewModel = new UsersIndexViewModel();
+            pageSize = pageSize == 0 ? 24 : pageSize;   // count of elements on page
+            var count = await users.CountAsync();
+            viewModel.PageViewModel = new PageViewModel(count, page, pageSize);
+            viewModel.Users = await users
+                .Skip((page - 1) * pageSize)//paging
+                .Take(pageSize)             //paging
+                .Include(c => c.Image)
+                .OrderByDescending(o => o.Reputation)
+                .ThenBy(o => o.Name)
+                .ToListAsync();
+
+            return View(viewModel);
         }
 
         // GET: Users/Details/5
@@ -54,8 +57,8 @@ namespace CodeAnswers.Controllers
 
             var users = await _context.Users
                 .Include(c => c.Image)
-                .Include(c=>c.Answer)
-                .Include(c=>c.Question)
+                .Include(c => c.Answer)
+                .Include(c => c.Question)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {

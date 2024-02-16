@@ -268,3 +268,16 @@ h1{font-size:1.7rem;}
 }
 .a-rating-form{display:flex;}
 .a-rating-form > div{margin-right:10px;}
+.paging {
+    justify-content: center;
+    display: flex;
+}
+.paging > a,span{
+    margin-right:10px;
+}
+
+.paging a.active {
+    background-color: #E7700D;
+    color: white;
+    border-color: #E7700D;
+}

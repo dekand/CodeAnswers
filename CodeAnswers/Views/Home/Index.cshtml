@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CodeAnswers.Models.Questions>
+﻿@model CodeAnswers.ViewModels.HomeIndexViewModel
 @{
     ViewData["Title"] = "Code Answers - Где разработчики обучаются, делятся знаниями и развиваются";
 }
@@ -12,11 +12,11 @@
         </a>
     </div>
 </div>
-<h6>Вопросы без ответа: @Model.Where(c=>c.Answered==false).Count()</h6>
-@if (Model.Any())
+<h6>Вопросы без ответа: @Model.NotAnswered</h6>
+@if (Model.Questions.Any())
 {
     <div class="top-questions">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Questions)
         {
             <div class="@if (item.Answered){@Html.Raw("answered-bg-grad")}">
                 <div class="row">
@@ -46,6 +46,7 @@
             </div>
         }
     </div>
+    <partial name="_PagingPartial" />
 }
 else
 {

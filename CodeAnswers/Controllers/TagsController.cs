@@ -21,7 +21,7 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Tags
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int page =1, int pageSize = 0)
         {
 
             if (_context.Tags == null)
@@ -37,9 +37,17 @@ namespace CodeAnswers.Controllers
                 tags = tags.Where(s => s.Name!.Contains(searchString));
             }
 
-            return View(await tags
-                .Include(s=>s.Question)
-                .ToListAsync());
+            var viewModel = new TagsIndexViewModel();
+            pageSize = pageSize == 0 ? 24 : pageSize;   // count of elements on page
+            var count = await tags.CountAsync();
+            viewModel.PageViewModel = new PageViewModel(count, page, pageSize);
+            viewModel.Tags = await tags
+                .Skip((page - 1) * pageSize)//paging
+                .Take(pageSize)             //paging
+                .Include(s => s.Question)
+                .ToListAsync();
+
+            return View(viewModel);
         }
 
         // GET: Tags/Details/5
