@@ -59,6 +59,7 @@ namespace CodeAnswers.Controllers
                 .Include(c => c.Image)
                 .Include(c => c.Answer)
                 .Include(c => c.Question)
+                .ThenInclude(c=>c.Answer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {

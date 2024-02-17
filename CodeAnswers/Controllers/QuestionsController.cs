@@ -2,6 +2,7 @@
 using CodeAnswers.Models;
 using CodeAnswers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -65,11 +66,12 @@ namespace CodeAnswers.Controllers
             .OrderByDescending(c => c.Rating)
             .ThenBy(c => c.PublicationDate)
             .ToListAsync();
-
-            var userId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
-            viewModel.QuestionsRatings = await _context.QuestionsRating
-                .Where(c => c.QuestionId == id && c.UserId == userId)
-                .ToListAsync();
+            if(User.Identity.IsAuthenticated)
+            {var userId = _context.Users.FirstOrDefault(u => u.Name == User.FindFirstValue(ClaimTypes.Name)).Id;
+                viewModel.QuestionsRatings = await _context.QuestionsRating
+                    .Where(c => c.QuestionId == id && c.UserId == userId)
+                    .ToListAsync();
+            }
             var allAnsId = await _context.Answers.Where(c => c.QuestionId == id).Select(p => p.Id).ToListAsync();
             viewModel.AnswersRatings = await _context.AnswersRating.Where(c => allAnsId.Contains(c.AnswerId)).ToListAsync();
             return View(viewModel);

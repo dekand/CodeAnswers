@@ -84,7 +84,7 @@
     <div class="col">
         <h1>@Html.DisplayFor(model => model.Question.Title)</h1>
     </div>
-    @if (SignInManager.IsSignedIn(User) && User.Identity!.Name == Model.Question.User.Name)
+    @if (User.Identity!.IsAuthenticated && User.Identity!.Name == Model.Question.User.Name)
     {
         <div class="col-auto">
             <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@Model.Question.Id">Изменить</a>
@@ -94,25 +94,25 @@
 </div>
 <div class="row q-date">
     <div class="col-auto row">
-        @if (Model.Question.Answered)
+         @if (Model.Question.Answered)
         {
             <div class="answ-checked col"></div>
         }
         @if (SignInManager.IsSignedIn(User) && User.Identity!.Name != Model.Question.User.Name)
-        {   
+        {
             <div class="col">
-            <form class="q-rating-form">
-                <input type="hidden" id="question-id" asp-for="@Model.Question.Id" value="@Model.Question.Id" />
-                <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" value="@User.Identity!.Name" />
-                <div class="col">
-                    <button id="like-question" type="button" class="btn btn-light like-rating-btn like-img col @if(Model.QuestionsRatings!=null && Model.QuestionsRatings.First().Likes==true){@Html.Raw("finger-active")} "></button>
-                </div>
-                <div class="col">
-                    <button id="dislike-question" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(Model.QuestionsRatings!=null && Model.QuestionsRatings.First().Dislikes==true){@Html.Raw("finger-active")} "></button>
-                </div>
-            </form>
+                <form class="q-rating-form">
+                    <input type="hidden" id="question-id" asp-for="@Model.Question.Id" value="@Model.Question.Id" />
+                    <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" value="@User.Identity!.Name" />
+                    <div class="col">
+                        <button id="like-question" type="button" class="btn btn-light like-rating-btn like-img col @if(@Model.QuestionsRatings.Any() && @Model.QuestionsRatings.First().Likes==true){@Html.Raw("finger-active");}"></button>
+                    </div>
+                    <div class="col">
+                        <button id="dislike-question" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(@Model.QuestionsRatings.Any() && @Model.QuestionsRatings.First().Dislikes==true){@Html.Raw("finger-active");}"></button>
+                    </div>
+                </form>
             </div>
-        }
+        } 
     </div>
     <div class="col-auto">
         <p><span>Рейтинг:</span> @Model.Question.Rating</p>
@@ -178,10 +178,10 @@
                             <input type="hidden" id="answer-id" asp-for="@answ.Id" />
                             <input type="hidden" id="user-name" asp-for="@User.Identity!.Name" />
                             <div class="col">
-                                <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col @if(Model.AnswersRatings!=null && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Likes==true){@Html.Raw("finger-active")}"></button>
+                                <button id="like-answer" type="button" class="btn btn-light like-rating-btn like-img col @if(Model.AnswersRatings.Any() && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Likes==true){@Html.Raw("finger-active");}"></button>
                             </div>
                             <div class="col">
-                                <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(Model.AnswersRatings!=null && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Dislikes==true){@Html.Raw("finger-active")}"></button>
+                                <button id="dislike-answer" type="button" class="btn btn-light dislike-rating-btn dislike-img col @if(Model.AnswersRatings.Any() && Model.AnswersRatings.Select(c=>c.AnswerId).Contains(answ.Id) && Model.AnswersRatings.FirstOrDefault(c=>c.AnswerId==answ.Id).Dislikes==true){@Html.Raw("finger-active");}"></button>
                             </div>
                         </form>
                     </div>
