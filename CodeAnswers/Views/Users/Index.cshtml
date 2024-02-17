@@ -11,10 +11,10 @@
 </form>
     @if (Model.Users.Any())
     {
-<div class="usr-list row row-cols-4">
+<div class="usr-list row">
         @foreach (var item in Model.Users)
         {
-            <div class="col">
+            <div class="col-6 col-sm-4 col-xl-2">
                 <div class="row">
                     <div class="col-auto">
                         <img src="@item.Image.ImagePath" alt="" />

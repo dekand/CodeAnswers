@@ -281,3 +281,28 @@ h1{font-size:1.7rem;}
     color: white;
     border-color: #E7700D;
 }
+.flx-end{display:flex; justify-content:flex-end;}
+.flx-end a{margin-right:5px;}
+@media(max-width:768px) {
+    .top-questions{
+        padding:0;
+        font-size:12px;
+    }
+        .top-questions > div > div > div:nth-child(3) {
+            width: 100%;
+            justify-content: end;
+        }
+    h1 {
+        font-size: 1.4rem;
+    }
+    .qstns-list > div:nth-child(1) {
+        font-size: 14px;
+    }
+    .usr-list img {
+        width: 40px;
+        height: auto;
+        border-radius: 5px;
+        max-width: 40px;
+        max-height: 40px;
+    }
+}

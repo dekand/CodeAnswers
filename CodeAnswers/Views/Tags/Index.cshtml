@@ -12,10 +12,10 @@
 </form>
 @if (Model.Tags.Any())
 {
-    <div class="tagsBlock row row-cols-4">
+    <div class="tagsBlock row">
         @foreach (var item in Model.Tags)
         {
-            <div class="col">
+            <div class="col-6 col-sm-4 col-xl-2">
                 <div>
                     <div><a asp-controller="Tags" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
                     <div><p>@Html.DisplayFor(modelItem => item.Description)</p></div>
