@@ -15,7 +15,7 @@ namespace CodeAnswers.Models
         [Display(Name = "Registration Date"), DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime RegistrationDate { get; set; }
 
-        public int Reputation { get; set; }
+        //public int Reputation { get; set; }
         public string? About { get; set; }
 
         [StringLength(255, MinimumLength = 3)]

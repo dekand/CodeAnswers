@@ -8,9 +8,9 @@
         <img src="@Model.Image.ImagePath" alt="" width="150" height="150"/>
     </div>
     <div class="col-auto">
-        <p>Репутация: <strong>@Model.Reputation</strong></p>
-        <p>Вопросов: <strong>@Model.Question.Count</strong></p>
-        <p>Ответов: <strong>@Model.Answer.Count</strong></p>
+        <p>Репутация: <strong class="rep-color">@Model.Rating.Total</strong></p>
+        <p>Вопросов: <strong>@Model.Question.Count</strong><span class="rep-color">(@Model.Rating.QuestionsRating)</span></p>
+        <p>Ответов: <strong>@Model.Answer.Count</strong><span class="rep-color">(@Model.Rating.AnswersRating)</span></p>
     </div>
     <div class="col">
         <div><h1>@Html.DisplayFor(model => model.Name)</h1></div>
@@ -26,14 +26,18 @@
         <div>
             <span>Ссылки: </span>
             @if (Model.LinkGithub != null)
-                {
-                    <a href="@Model.LinkGithub">GitHub</a>
-                }
-                
-                @if (Model.LinkSocial != null)
-                {
+            {
+                <a href="@Model.LinkGithub">GitHub</a>
+            }
+
+            @if (Model.LinkSocial != null)
+            {
                 <a href="@Model.LinkSocial">Social</a>
-                }
+            }
+            @if (Model.LinkSocial ==null && Model.LinkGithub == null)
+            {
+                <span> не указано.</span>
+            }
         </div>
     </div>
 </div>

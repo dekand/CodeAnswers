@@ -100,8 +100,8 @@ namespace CodeAnswers.Data
             builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(p => p.RegistrationDate).HasColumnName("registration_date").IsRequired()
                 .HasDefaultValueSql("getdate()");
-            builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
-                .HasComputedColumnSql("[dbo].[Fun_ReputationCalc]([id])");
+            //builder.Property(p => p.Reputation).HasColumnName("reputation").IsRequired()
+            //    .HasComputedColumnSql("[dbo].[Fun_ReputationCalc]([id])");
             builder.Property(p => p.Location).HasColumnName("location");
             builder.Property(p => p.LinkSocial).HasColumnName("link_social");
             builder.Property(p => p.LinkGithub).HasColumnName("link_github");

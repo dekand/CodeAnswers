@@ -33,7 +33,9 @@ namespace CodeAnswers.Areas.Identity.Pages.Account.Manage
                 return NotFound();
             }
 
-            var users =  await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            var users =  await _context.Users
+                .Include(c => c.Rating)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {
                 return NotFound();

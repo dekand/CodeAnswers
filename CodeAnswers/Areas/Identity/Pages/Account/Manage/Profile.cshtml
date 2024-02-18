@@ -8,7 +8,7 @@
 <p>Имя пользователя: <strong>@Model.Users.Name</strong></p>
 <p>Почта: <strong>@Model.Users.Email</strong></p>
 <p>Дата регистрации: <strong>@Model.Users.RegistrationDate</strong></p>
-<p>Репутация: <strong>@Model.Users.Reputation</strong></p>
+<p>Репутация: <strong>@Model.Users.Rating.Total</strong></p>
 <hr />
 <div class="row">
     <div class="col-md-12">
@@ -17,7 +17,7 @@
              <input type="hidden" asp-for="Users.Id"/>
              <input type="hidden" asp-for="Users.Name" />
              <input type="hidden" asp-for="Users.Email" />
-             <input type="hidden" asp-for="Users.Reputation" />
+             <input type="hidden" asp-for="Users.Rating.Total" />
              <input type="hidden" asp-for="Users.RegistrationDate" />
             <div class="form-group">
                 <label asp-for="Users.Location" class="control-label"></label>

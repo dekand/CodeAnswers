@@ -40,10 +40,10 @@ namespace CodeAnswers.Controllers
                 .Skip((page - 1) * pageSize)//paging
                 .Take(pageSize)             //paging
                 .Include(c => c.Image)
-                .OrderByDescending(o => o.Reputation)
+                .Include(c => c.Rating)
+                .OrderByDescending(o => o.Rating.Total)
                 .ThenBy(o => o.Name)
                 .ToListAsync();
-
             return View(viewModel);
         }
 
@@ -58,6 +58,7 @@ namespace CodeAnswers.Controllers
             var users = await _context.Users
                 .Include(c => c.Image)
                 .Include(c => c.Answer)
+                .Include(c=>c.Rating)
                 .Include(c => c.Question)
                 .ThenInclude(c=>c.Answer)
                 .FirstOrDefaultAsync(m => m.Id == id);
