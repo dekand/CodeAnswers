@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodeAnswers.Data;
 using CodeAnswers.Models;
+using System.Threading;
 
 namespace CodeAnswers.Controllers
 {
@@ -101,7 +102,7 @@ namespace CodeAnswers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,PublicationDate,Rating,AuthorId,QuestionId")] Answers answers)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PublicationDate,QuestionId,Rating,AuthorId,Description")] Answers answers)
         {
             if (id != answers.Id)
             {
@@ -126,11 +127,9 @@ namespace CodeAnswers.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["QuestionId"] = new SelectList(_context.Questions, "Id", "Description", answers.QuestionId);
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", answers.AuthorId);
-            return View(answers);
+
+            return Redirect(Url.RouteUrl(new { controller = "Questions", action = "Details", id = answers.QuestionId }));
         }
 
         // GET: Answers/Delete/5
