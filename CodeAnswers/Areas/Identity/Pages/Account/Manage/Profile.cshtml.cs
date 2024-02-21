@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CodeAnswers.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CodeAnswers.Data;
-using CodeAnswers.Models;
 using System.Security.Claims;
-using Microsoft.Extensions.Hosting.Internal;
 
 namespace CodeAnswers.Areas.Identity.Pages.Account.Manage
 {
@@ -33,7 +26,7 @@ namespace CodeAnswers.Areas.Identity.Pages.Account.Manage
                 return NotFound();
             }
 
-            var users =  await _context.Users
+            var users = await _context.Users
                 .Include(c => c.Rating)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
@@ -46,12 +39,16 @@ namespace CodeAnswers.Areas.Identity.Pages.Account.Manage
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync([Bind("Id,Name,Email,RegistrationDate,Location,LinkSocial,LinkGithub,About")] Users users)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            Users.About = users.About;
+            Users.LinkGithub = users.LinkGithub;
+            Users.LinkSocial = users.LinkSocial;
+            Users.Location = users.Location;
 
             _context.Attach(Users).State = EntityState.Modified;
 
