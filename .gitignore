@@ -365,4 +365,4 @@ FodyWeavers.xsd
 #Игнор Миграций в БД
 CodeAnswers/Data/Migrations/
 #Игнор файла с подключением к БД
-appsettings.json
+CodeAnswers/appsettings.json
