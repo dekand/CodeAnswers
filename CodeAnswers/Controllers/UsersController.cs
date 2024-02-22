@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodeAnswers.Controllers
 {
-    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,6 +47,7 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,9 +58,9 @@ namespace CodeAnswers.Controllers
             var users = await _context.Users
                 .Include(c => c.Image)
                 .Include(c => c.Answer)
-                .Include(c=>c.Rating)
+                .Include(c => c.Rating)
                 .Include(c => c.Question)
-                .ThenInclude(c=>c.Answer)
+                .ThenInclude(c => c.Answer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {
@@ -71,6 +71,7 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -80,6 +81,7 @@ namespace CodeAnswers.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
         {
@@ -93,6 +95,7 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -112,6 +115,7 @@ namespace CodeAnswers.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,RegistrationDate,Reputation,Location,LinkSocial,LinkGithub")] Users users)
         {
@@ -144,6 +148,7 @@ namespace CodeAnswers.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -162,6 +167,7 @@ namespace CodeAnswers.Controllers
         }
 
         // POST: Users/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
